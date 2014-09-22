@@ -1,0 +1,51 @@
+div#list_box 
+{
+	width: 50%;
+	overflow: auto;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	left: 0;
+	background: #eee;
+}
+
+div#preview_box
+{
+	width: 50%;
+	float: right;
+}
+
+div#filter_box 
+{
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+	border-bottom: 1px solid #999;
+}
+
+div#filter_box div 
+{
+    padding: 4px;
+}
+
+a.item
+{
+	display: block;
+	padding: 4px;
+	height: 42px;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+	background: #fff;
+}
+
+a.item:hover 
+{
+	background: #dfebfe;
+	cursor: pointer;
+}
+
+div A.item:first
+{
+	border-top: none;
+}
+

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env python
+# encoding: utf-8
+import os
+import re
+import codecs
+import json
+from string import Template
+
+
+# envvars = ['TM_BUNDLE_SUPPORT', 'TM_SUPPORT_PATH']
+# sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sys.path]
+
+# FIXME: Match 'zk' behaviour
+ZK_DIR=u"/Users/per/Dropbox/Notes"
+
+
+HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.+)\s*'
+ANFANG_REGEX = r'^((?:\S+\s+){1,6})'
+
+def zk_files(dir):
+    for filename in os.listdir(dir):
+        (name, ext) = os.path.splitext(filename)
+        if not name.startswith('zk'):
+            continue
+        path = os.path.join(dir, filename)
+        with codecs.open(path, 'r', 'utf-8') as f:
+            txt = f.readlines()
+        yield(path, txt)
+
+def split_off_header(txt):
+    header = {}
+    note = []
+    in_header = True
+    for line in txt:
+        if in_header:
+            match = re.match(HEADER_LINE_REGEX, line)
+            if  match:
+                header[match.group(1)] = match.group(2)
+                continue
+            in_header = False
+        else:
+            if not line.strip():
+                continue
+            note.append(line)
+
+    anfang = u'&lt;Empty note&gt;'
+    if note:
+        match = re.match(ANFANG_REGEX, note[0])
+        if match:
+            anfang = match.group(1)
+        else:
+            anfang = note[0]
+        anfang = anfang.rstrip() + u' …'
+
+    header['_anfang'] = anfang
+    return header, ''.join(note)
+
+
+def HTML_preamble(title, dir):
+    return Template("""
+    &lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;$title&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="file://$dir/zk.css"&gt;
+        &lt;script src="file://$dir/zk.js"&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    """).substitute(title=title, dir=dir)
+
+def HTML_postamble():
+    return """
+    &lt;/body&gt;
+    &lt;/html&gt;
+    """
+
+def HTML_filter_bar():
+    return """
+    &lt;div id='filter_box'&gt;
+	    &lt;div&gt;Filter results:
+            &lt;input type='search' id='search' onkeyup="filter_results(this)" onsearch='filter_results(this)' /&gt;
+            &lt;span id='results'&gt;&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    """
+
+def HTML_data_store(data):
+    return Template("""
+    &lt;script type="text/javascript"&gt;
+        notes = $json_data;
+    &lt;/script&gt;
+    """).substitute(json_data=json.dumps(data, indent=2))
+
+def HTML_list_item(hdr):
+    item = Template(
+    """
+	&lt;a href='#' class='item' onclick='display_note($ID); return false;' id='$ID'&gt;
+	    &lt;div class='anfang'&gt;$_anfang&lt;/div&gt;
+	    &lt;div class='tags'&gt;&lt;span&gt;$Tags&lt;/span&gt;&lt;/div&gt;
+	&lt;/a&gt;
+    """).substitute(hdr)
+    return item
+
+def HTML_filtered_list(data):
+    list = ""
+    for id in data:
+        (hdr, _) = data[id]
+        list += HTML_list_item(hdr)
+    return "&lt;div id='list_box'&gt;" + list + "&lt;/div&gt;"
+
+def HTML_preview():
+    return """
+    &lt;div id='preview_box'&gt;
+        &lt;div id='preview_pane'&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    """
+
+all = {}
+for path, txt in zk_files(ZK_DIR):
+    hdr, note = split_off_header(txt)
+    hdr['_path'] = path
+    all[hdr['ID']] = (hdr, note)
+
+support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
+
+print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
+print HTML_data_store(all).encode('utf-8')
+print HTML_filter_bar().encode('utf-8')
+print HTML_filtered_list(all).encode('utf-8')
+print HTML_preview().encode('utf-8')
+print HTML_postamble().encode('utf-8')
+
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>~@k</string>
+	<key>name</key>
+	<string>Browse ZK-notes</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>uuid</key>
+	<string>E097E882-B7E5-4EE1-AE73-BA2AF90D9900</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
