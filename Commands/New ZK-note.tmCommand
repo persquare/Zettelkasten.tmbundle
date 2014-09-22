@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+# usage: zk [-h] [-a &lt;name&gt;] [-d &lt;dir&gt;] [--txmt]
+#
+# Create a zk-note file with some defaults filled in. The name of the created
+# file matches the ID of the note, i.e.: "zk&lt;ID&gt;.md" Returns the full path to
+# the newly created file on success.
+#
+# optional arguments:
+#   -h, --help                  Show this help message and exit
+#   -a &lt;name&gt;, --author &lt;name&gt;  Override default author name
+#   -d &lt;dir&gt;, --dir &lt;dir&gt;       Override default Zettelkasten directory
+#   --txmt                      Format output as a URI for use with TextMate2
+#
+# The default author is read from environment variable 'ZK_AUTHOR' if it exists,
+# otherwise it is set to full name of the current user. The default directory to
+# create the note in is read from environment variable 'ZK_DIR' if it exists,
+# otherwise it is set to $HOME/Desktop.
+
+path=`zk --txmt`
+if [[ "$path" ]]; then
+	open $path 
+fi
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>^@k</string>
+	<key>name</key>
+	<string>New ZK-note</string>
+	<key>outputLocation</key>
+	<string>toolTip</string>
+	<key>uuid</key>
+	<string>DB068847-F315-4F90-8B45-61A8F5538393</string>
+</dict>
+</plist>
