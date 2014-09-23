@@ -21,6 +21,9 @@ function filter_results(search) {
         if (notes[key][0].ID.substring(0, str.length) === str) {
         	count++
 			document.getElementById(key).style.display = 'block'
+            if (count == 1) {
+                display_note(key)
+            }
         } else {
 			document.getElementById(key).style.display = 'none'
         }
