@@ -13,13 +13,7 @@ import codecs
 import json
 from string import Template
 
-
-# envvars = ['TM_BUNDLE_SUPPORT', 'TM_SUPPORT_PATH']
-# sys.path[:0] = [os.environ[v]+'/lib' for v in envvars if os.environ[v] not in sys.path]
-
-# FIXME: Match 'zk' behaviour
-ZK_DIR=u"/Users/per/Dropbox/Notes"
-
+ZK_DIR = os.environ.get('ZK_DIR') or os.environ.get('HOME') + "/Desktop"
 
 HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.+)\s*'
 ANFANG_REGEX = r'^((?:\S+\s+){1,6})'
