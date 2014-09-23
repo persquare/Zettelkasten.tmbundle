@@ -1,7 +1,7 @@
-function format_header(element) {
+function format_header(element, path) {
     var header = element.getElementsByTagName('p')[0]
     var text = header.innerHTML;
-    header.innerHTML = '<div class="header"><pre>'+text+'</pre></div>';
+    header.innerHTML = '<div class="header"><pre>'+text+'</pre><a href="txmt://open?url=file://' + path + '">Edit…</a></div>';
 }
 
 function display_note(id) {
@@ -9,7 +9,7 @@ function display_note(id) {
     var path = notes[id][0]['_path']
     var obj = TextMate.system('"Markdown.pl" "' + path +'"', null);
     preview.innerHTML = obj.outputString
-    format_header(preview);
+    format_header(preview, path);
 }
 
 function filter_results(search) {
