@@ -12,6 +12,17 @@ function display_note(id) {
     format_header(preview, path);
 }
 
+function reset_list() {
+    var count = 0
+    for (var key in notes) {
+        count++
+		document.getElementById(key).style.display = 'block'
+        if (count == 1) {
+            display_note(key)
+        }
+    }
+}
+
 function filter_results(search) {
 	var str = search.value
 	var results = document.getElementById('results')

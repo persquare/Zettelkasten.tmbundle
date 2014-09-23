@@ -65,7 +65,7 @@ def HTML_preamble(title, dir):
         &lt;link rel="stylesheet" type="text/css" href="file://$dir/zk.css"&gt;
         &lt;script src="file://$dir/zk.js"&gt;&lt;/script&gt;
     &lt;/head&gt;
-    &lt;body&gt;
+    &lt;body  onload='reset_list();document.getElementById("search").focus()'&gt;
     """).substitute(title=title, dir=dir)
 
 def HTML_postamble():
