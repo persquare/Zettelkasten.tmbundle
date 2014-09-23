@@ -1,8 +1,15 @@
+function format_header(element) {
+    var header = element.getElementsByTagName('p')[0]
+    var text = header.innerHTML;
+    header.innerHTML = '<div class="header"><pre>'+text+'</pre></div>';
+}
+
 function display_note(id) {
     var preview = document.getElementById('preview_pane')
     var path = notes[id][0]['_path']
     var obj = TextMate.system('"Markdown.pl" "' + path +'"', null);
     preview.innerHTML = obj.outputString
+    format_header(preview);
 }
 
 function filter_results(search) {
