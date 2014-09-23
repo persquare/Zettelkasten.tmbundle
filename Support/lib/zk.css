@@ -1,18 +1,25 @@
+/* Layout */
+
 div#list_box 
 {
-	width: 50%;
+	width: 40%;
 	overflow: auto;
 	position: absolute;
 	top: 40px;
 	bottom: 0;
 	left: 0;
-	background: #eee;
+	/* background: #eee; */
 }
 
 div#preview_box
 {
-	width: 50%;
+	width: 60%;
 	float: right;
+}
+
+div#preview_pane {
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 div#filter_box 
@@ -20,32 +27,102 @@ div#filter_box
 	height: 30px;
 	line-height: 30px;
 	vertical-align: middle;
-	border-bottom: 1px solid #999;
+	/* border-bottom: 1px solid #999; */
 }
 
-div#filter_box div 
+div#filter_box
 {
     padding: 4px;
 }
 
-a.item
-{
-	display: block;
-	padding: 4px;
-	height: 42px;
-	border-right: 1px solid #999;
-	border-bottom: 1px solid #999;
-	background: #fff;
+/* Styling */
+
+
+body {
+	background: #fefefe;
+	color: #080808;
+	font: 13px "Trebuchet MS", Helvetica, sans-serif;
 }
 
-a.item:hover 
-{
+.zk code, pre {
+	font-size: 12;
+	font-family: "Menlo", "Monaco", "Courier New", monospace;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+}
+
+.zk pre {
+	background-color: #f0f0f0;
+	border: 1px solid #888;
+	padding: 10px 10px 10px 20px;
+}
+
+
+.zk h1 {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.zk h2 {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+
+.zk h3 {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.zk h4  {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.zk blockquote {
+	border-left: 4px solid #88f;
+	font-style: italic;
+	margin: 1em 25px;
+	padding-left: 1em;
+
+}
+
+a {
+ 	text-decoration: none;	
+}
+	
+a.item {
+	display: block;
+	padding: 4px;
+	height: 24px;
+	border-right: 1px solid #eef;
+	border-bottom: 1px solid #eef;
+  	text-decoration: none;
+}
+
+a.item:hover {
 	background: #dfebfe;
 	cursor: pointer;
 }
 
-div A.item:first
-{
+/*
+div a.item:first {
 	border-top: none;
 }
+*/
+.anfang {
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+  	font-size: 12px;
+  	color: #333;
+}
+
+.tags {
+  font-family: Menlo;
+  font-size: 11px;
+  color: #777;
+}
+
 
