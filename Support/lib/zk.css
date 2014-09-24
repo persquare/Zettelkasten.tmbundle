@@ -103,11 +103,6 @@ a.item {
   	text-decoration: none;
 }
 
-a.item:hover {
-	background: #dfebfe;
-	cursor: pointer;
-}
-
 /*
 div a.item:first {
 	border-top: none;

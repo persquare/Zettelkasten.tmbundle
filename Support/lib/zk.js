@@ -27,7 +27,21 @@ function display_note(id) {
     var obj = TextMate.system('"Markdown.pl" "' + path +'"', null);
     preview.innerHTML = obj.outputString
     format_header(preview, path);
-    mangle_links(preview)
+    mangle_links(preview);
+    highlight_item(id);
+}
+
+function highlight_item(id) {
+  var count = 0;
+  for (var key in notes) {
+	    var item = document.getElementById(key);
+      if (id == item.id) {
+        item.style.backgroundColor = '#dfebfe';
+      } else {
+        item.style.backgroundColor = 'inherit';       
+      } 
+      
+  }
 }
 
 function reset_list() {
