@@ -16,6 +16,8 @@ function mangle_links(element) {
     var url = links[i].href;
     if (url.substring(0,5) === 'zk://') {
       links[i].onclick = open_zk_link;  
+    } else if (url.substring(0,7) !== 'txmt://') {
+      links[i].innerHTML += '<img src="external.gif" />'
     }
   } 
 }
