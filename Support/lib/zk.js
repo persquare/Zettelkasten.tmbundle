@@ -34,13 +34,12 @@ function display_note(id) {
 function highlight_item(id) {
   var count = 0;
   for (var key in notes) {
-	    var item = document.getElementById(key);
-      if (id == item.id) {
-        item.style.backgroundColor = '#dfebfe';
-      } else {
-        item.style.backgroundColor = 'inherit';       
-      } 
-      
+    var item = document.getElementById(key);
+    if (id == item.id) {
+      item.style.backgroundColor = '#dfebfe';
+    } else {
+      item.style.backgroundColor = 'inherit';       
+    } 
   }
 }
 
