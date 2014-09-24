@@ -54,6 +54,19 @@ body {
 	white-space: -o-pre-wrap;
 }
 
+div.header pre {
+	background-color: #fefefe;
+    border:none;
+    padding:0;
+	border-bottom: 2px solid #88f;
+	padding-bottom: 1em;
+}
+
+div.header p {
+    text-align:right;
+    padding: 0px;
+}
+
 .zk pre {
 	background-color: #f0f0f0;
 	border: 1px solid #888;

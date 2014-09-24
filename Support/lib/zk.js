@@ -1,7 +1,7 @@
 function format_header(element, path) {
     var header = element.getElementsByTagName('p')[0]
     var text = header.innerHTML;
-    header.innerHTML = '<div class="header"><pre>'+text+'</pre><a href="txmt://open?url=file://' + path + '">Edit…</a></div>';
+    header.innerHTML = '<div class="header"><p><a href="txmt://open?url=file://' + path + '">Edit…</a><p><pre class="header">'+text+'</pre></div>';
 }
 
 function open_zk_link(element) {
