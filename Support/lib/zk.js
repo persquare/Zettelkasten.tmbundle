@@ -14,8 +14,7 @@ function mangle_links(element) {
   var links = element.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
     var url = links[i].href;
-    var url_scheme = url.substring(0, 5);
-    if (url_scheme === 'zk://') {
+    if (url.substring(0,5) === 'zk://') {
       links[i].onclick = open_zk_link;  
     }
   } 
