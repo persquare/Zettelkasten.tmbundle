@@ -66,6 +66,8 @@ function intersect(a, b) {
 
 function filter_results(search) {
   // Process the search string here, then call sub-filters
+  // Just use an indexed list (starting with all entries = True) as input to each sub-filter
+  // Compute all results from the final list state, and generate output
   filter_by_tag(search);
 }
 
