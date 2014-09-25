@@ -65,44 +65,52 @@ function intersect(a, b) {
   });
 }
 
+function parse_predicate(str) {
+  // Check for tags (#)
+  var tag_regex = /#(\w[\w\d_]*)/g;
+  var tag_list = [];
+  // http://stackoverflow.com/a/432503
+  var match = tag_regex.exec(str);
+  while (match != null) {
+      tag_list.push(match[1]);
+      var match = tag_regex.exec(str);
+  }
+  tag_list = intersect(tag_list, tags);
+  // Check for id (@)
+  var id_regex = /@(\d+)/g;
+  var id = null;
+  var match = id_regex.exec(str);
+  if (match != null) {
+      id = match[1];
+  }
+
+  return {'id':id, 'tag_list':tag_list};
+}
+
 function filter_results(search) {
   // Process the search string here, then call sub-filters
-  // Just use an indexed list (starting with all entries = True) as input to each sub-filter
-  // Compute all results from the final list state, and generate output
-  filter_by_tag(search);
-}
-
-function filter_by_id(search) {
   var str = search.value;
-  var results = document.getElementById('results');
-  var count = 0;
-  // Simple filtering on ID example 
-  for (var key in notes) {
-    if (notes[key][0].ID.substring(0, str.length) === str) {
-      count++;
-      document.getElementById(key).style.display = 'block';
-      if (count == 1) {
-        display_note(key);
-      }
-    } else {
-      document.getElementById(key).style.display = 'none';
-    }
-  }
-  results.innerHTML = (str) ? count + ' Found' : '';
-}
-
-function filter_by_tag(search) {
-  var str = search.value;
-  if (str === "" || intersect([str], tags).length == 0) {
+  if (str === "") {
     reset_list();
     return;
-  }
-  var results = document.getElementById('results');
-  var count = 0;
-  // Filtering on tag
+  } 
+  var predicate = parse_predicate(str);
+  // Just use an dict (starting with all entries = True) as input to each sub-filter
+  var result = {};
   for (var key in notes) {
-    var note_tags = notes[key][0].Tags;
-    if (intersect([str], note_tags).length > 0) {
+    result[key] = true;
+  } 
+  // Filter on all predicates
+  if (predicate.tag_list.length > 0) {
+    result = filter_by_tag(predicate.tag_list, result);
+  }
+  if (predicate.id != null) {
+    result = filter_by_id(predicate.id, result);
+  }
+  // Compute all results from the final list state, and generate output
+  var count = 0;
+  for (var key in result) {
+    if (result[key]) {
       count++;
       document.getElementById(key).style.display = 'block';
       if (count == 1) {
@@ -112,5 +120,32 @@ function filter_by_tag(search) {
       document.getElementById(key).style.display = 'none';
     }
   }
-  results.innerHTML = (str) ? count + ' Found' : '';
+  document.getElementById('results').innerHTML = (str) ? count + ' Found' : '';
 }
+
+function filter_by_tag(tag_list, result) {
+  for (var key in result) {
+    if (!result[key]) {
+      continue;
+    }
+    var note_tags = notes[key][0].Tags;
+    if (intersect(tag_list, note_tags).length !== tag_list.length) {
+      result[key] = false;
+    }
+  }
+  return result;
+}
+
+function filter_by_id(id, result) {
+  for (var key in result) {
+    if (!result[key]) {
+      continue;
+    }
+    var note_id = notes[key][0].ID;
+    if (note_id.substring(0, id.length) !== id) {
+      result[key] = false;
+    }
+  }
+  return result;
+}
+
