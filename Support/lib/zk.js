@@ -55,23 +55,60 @@ function reset_list() {
     }
 }
 
+// http://stackoverflow.com/a/16227294
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        if (b.indexOf(e) !== -1) return true;
+    });
+}
+
 function filter_results(search) {
-	var str = search.value
-	var results = document.getElementById('results')
-	var count = 0
+  // Process the search string here, then call sub-filters
+  filter_by_tag(search);
+}
+
+function filter_by_id(search) {
+	var str = search.value;
+	var results = document.getElementById('results');
+	var count = 0;
     // Simple filtering on ID example 
     for (var key in notes) {
         if (notes[key][0].ID.substring(0, str.length) === str) {
-        	count++
-			document.getElementById(key).style.display = 'block'
+        	  count++;
+			      document.getElementById(key).style.display = 'block';
             if (count == 1) {
-                display_note(key)
+                display_note(key);
             }
         } else {
-			document.getElementById(key).style.display = 'none'
+			      document.getElementById(key).style.display = 'none';
         }
     }
-	results.innerHTML = (str) ? count + ' Found' : ''
+	  results.innerHTML = (str) ? count + ' Found' : '';
 }
 
+function filter_by_tag(search) {
+	var str = search.value;
+  if (str === "" || intersect([str], tags).length == 0) {
+      reset_list();
+      return;
+  }  
+	var results = document.getElementById('results');
+	var count = 0;
+    // Filtering on tag
+    for (var key in notes) {
+        var note_tags = notes[key][0].Tags;
+        if (intersect([str], note_tags).length > 0) {
+          	count++;
+            document.getElementById(key).style.display = 'block';
+            if (count == 1) {
+                display_note(key);
+            }
+        } else {
+			      document.getElementById(key).style.display = 'none';
+        }
+    }
+	  results.innerHTML = (str) ? count + ' Found' : '';
+}
 

@@ -44,6 +44,7 @@ def split_off_header(txt):
                 continue
             note.append(line)
 
+    # Anfang is the first six words in the note
     anfang = u'&lt;Empty note&gt;'
     if note:
         match = re.match(ANFANG_REGEX, note[0])
@@ -54,8 +55,15 @@ def split_off_header(txt):
         anfang = anfang.rstrip() + u' …'
 
     header['_anfang'] = anfang
+    # Use anfang as title if title is not given in header
     if not 'Title' in header or not header['Title'].strip():
         header['Title'] = anfang
+        
+    # Make tags a (uniform) list
+    tag_str = header.get('Tags', "")
+    tags = [t.strip(' ,') for t in tag_str.split()]
+    header['Tags'] = tags
+    
     return header, ''.join(note)
 
 
@@ -87,12 +95,12 @@ def HTML_filter_bar():
     &lt;/div&gt;
     """
 
-def HTML_data_store(data):
+def HTML_data_store(name, data):
     return Template("""
     &lt;script type="text/javascript"&gt;
-        notes = $json_data;
+        $key = $json_data;
     &lt;/script&gt;
-    """).substitute(json_data=json.dumps(data, indent=2))
+    """).substitute(key=name, json_data=json.dumps(data, indent=2))    
 
 def HTML_list_item(hdr):
     item = Template(
@@ -120,15 +128,18 @@ def HTML_preview():
     """
 
 all = {}
+tags = set()
 for path, txt in zk_files(ZK_DIR):
     hdr, note = split_off_header(txt)
     hdr['_path'] = path
     all[hdr['ID']] = (hdr, note)
-
+    tags.update(set(hdr.get('Tags', [])))
+    
 support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
 
 print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
-print HTML_data_store(all).encode('utf-8')
+print HTML_data_store("notes", all).encode('utf-8')
+print HTML_data_store("tags", list(tags)).encode('utf-8')
 print HTML_filter_bar().encode('utf-8')
 print HTML_filtered_list(all).encode('utf-8')
 print HTML_preview().encode('utf-8')
