@@ -15,7 +15,7 @@ from string import Template
 
 ZK_DIR = os.environ.get('ZK_DIR') or os.environ.get('HOME') + "/Desktop"
 
-HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.+)\s*'
+HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.*)\s*'
 ANFANG_REGEX = r'^((?:\S+\s+){1,6})'
 
 def zk_files(dir):
@@ -54,6 +54,8 @@ def split_off_header(txt):
         anfang = anfang.rstrip() + u' …'
 
     header['_anfang'] = anfang
+    if not 'Title' in header or not header['Title'].strip():
+        header['Title'] = anfang
     return header, ''.join(note)
 
 
@@ -96,7 +98,7 @@ def HTML_list_item(hdr):
     item = Template(
     """
 	&lt;a href='#' class='item' onclick='display_note($ID); return false;' id='$ID'&gt;
-	    &lt;div class='anfang'&gt;$_anfang&lt;/div&gt;
+	    &lt;div class='anfang'&gt;$Title&lt;/div&gt;
 	    &lt;div class='tags'&gt;&lt;span&gt;$Tags&lt;/span&gt;&lt;/div&gt;
 	&lt;/a&gt;
     """).substitute(hdr)
