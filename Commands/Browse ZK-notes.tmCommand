@@ -103,13 +103,15 @@ def HTML_data_store(name, data):
     """).substitute(key=name, json_data=json.dumps(data, indent=2))    
 
 def HTML_list_item(hdr):
+    formatted_tags = [u'#'+tag for tag in hdr.get('Tags', [])]
+    _tags = ", ".join(formatted_tags)
     item = Template(
     """
 	&lt;a href='#' class='item' onclick='display_note($ID); return false;' id='$ID'&gt;
 	    &lt;div class='anfang'&gt;$Title&lt;/div&gt;
 	    &lt;div class='tags'&gt;&lt;span&gt;$Tags&lt;/span&gt;&lt;/div&gt;
 	&lt;/a&gt;
-    """).substitute(hdr)
+    """).substitute(hdr, Tags=_tags)
     return item
 
 def HTML_filtered_list(data):
