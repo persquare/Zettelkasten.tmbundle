@@ -8,7 +8,7 @@ import pwd
 import argparse
 from datetime import datetime
 
-def create_zk(path, author=''):
+def create_zk(path, author='', body=None):
     template = "Date: %s\nAuthor: %s\nID: %s\nTags: \n\n"
     time = datetime.now()
     date = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -18,6 +18,8 @@ def create_zk(path, author=''):
     path = os.path.join(path, filename)
     with open(path, 'w') as f:
         f.write(template % (date, author, zkid))
+        if body:
+            f.write(body)
 
     return path
 
@@ -49,6 +51,7 @@ if __name__ == '__main__':
     """
 
     parser = argparse.ArgumentParser(description=long_desc, epilog=epilog)
+
     parser.add_argument('-a', '--author', dest='author', metavar='<name>',
                         type=str, default=author,
                         help='Override default author name (%s)' % author)
@@ -58,12 +61,17 @@ if __name__ == '__main__':
                         help='Override default Zettelkasten directory (%s)' % path)
 
     parser.add_argument('--txmt', action="store_true",
-                        help='format output as a URI for use with TextMate 2')
+                        help='Format output as a URI for use with TextMate 2')
+                        
+    parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
+                        help="Read body text from infile, use '-' for stdin")
 
     args = parser.parse_args()
 
+    body = args.infile.read() if args.infile else None
+    
     try:
-        retval = create_zk(args.path, args.author)
+        retval = create_zk(args.path, args.author, body)
     except:
         sys.stderr.write('Error: Could not create zk-note\n')
         sys.exit(1)
