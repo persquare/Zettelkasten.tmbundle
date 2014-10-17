@@ -18,7 +18,7 @@ Zettelkasten -- A note keeper and browser for TextMate 2
 This bundle provides two commands: "New ZK-note" and "Browse ZK-notes". Contrary to most other bundles, _the commands are not tied to a scope_, but can be invoked anywhere within TextMate.
 
 ## New ZK-note (⌃⌘K)
-This will create a new note in `ZK_DIR`, fill it with some default information in the _header_, and wait for you to jot down that brillian idea before it disappears.
+This will create a new note in `ZK_DIR`, fill it with some default information in the _header_, and wait for you to jot down that brilliant idea before it disappears. If you have any text selected in the frontmost TextMate document, that text will be put into the body of the note.
 
 A note consists of the _header_, a blank line, and the actual _note_ in Markdown (or plain text) format:
 
@@ -57,6 +57,10 @@ Since the commands are global to TextMate, you may want to remap the keyboard sh
 
 ## Extras
 The creation of notes is handled by the tool `zk` in the bundle's `Support/bin` folder. It is useful in its own right, and could be symlinked from somewhere on your path to be available as a command. See `zk --help` for more info. 
+
+An example of a putting `zk` to good use is to create a service that allows you to create a note from text in any application (change path to `zk` as needed):
+
+![Service example](lib/ZKService.png "ZK Service")
 
 ## Credits
 Note keeping and name inspired by [Christian Tietze's writings][1]  

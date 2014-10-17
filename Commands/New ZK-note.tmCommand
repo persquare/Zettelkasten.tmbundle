@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
 	<key>command</key>
 	<string>#!/usr/bin/env bash
 [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
@@ -23,20 +25,32 @@
 # create the note in is read from environment variable 'ZK_DIR' if it exists,
 # otherwise it is set to $HOME/Desktop.
 
-path=`zk --txmt`
+if [ -n "$TM_SELECTED_TEXT" ]; then 
+  path=`echo ${TM_SELECTED_TEXT} | zk --txmt -`
+else
+  path=`zk --txmt`
+fi
 if [[ "$path" ]]; then
 	open $path 
 fi
 </string>
 	<key>input</key>
 	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
 	<key>keyEquivalent</key>
 	<string>^@k</string>
 	<key>name</key>
 	<string>New ZK-note</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>text</string>
 	<key>outputLocation</key>
 	<string>toolTip</string>
 	<key>uuid</key>
 	<string>DB068847-F315-4F90-8B45-61A8F5538393</string>
+	<key>version</key>
+	<integer>2</integer>
 </dict>
 </plist>
