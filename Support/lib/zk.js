@@ -83,8 +83,16 @@ function parse_predicate(str) {
   if (match != null) {
       id = match[1];
   }
-
-  return {'id':id, 'tag_list':tag_list};
+  // Check for freetext
+  var text_regex = /\s+(\w+)/g;
+  var text = null;
+  var match = text_regex.exec(str);
+  if (match != null) {
+      text = match[1];
+  }
+  console.log(text)
+  
+  return {'id':id, 'tag_list':tag_list, 'text':text};
 }
 
 function filter_results(search) {
@@ -106,6 +114,9 @@ function filter_results(search) {
   }
   if (predicate.id != null) {
     result = filter_by_id(predicate.id, result);
+  }
+  if (predicate.text != null) {
+    result = filter_by_text(predicate.text, result);
   }
   // Compute all results from the final list state, and generate output
   var count = 0;
@@ -143,6 +154,20 @@ function filter_by_id(id, result) {
     }
     var note_id = notes[key].ID;
     if (note_id.substring(0, id.length) !== id) {
+      result[key] = false;
+    }
+  }
+  return result;
+}
+
+function filter_by_text(text, result) {
+  for (var key in result) {
+    if (!result[key]) {
+      continue;
+    }
+    var anfang = notes[key]._anfang;
+    var text_regex = new RegExp(text, "g");
+    if (text_regex.exec(anfang) == null) {
       result[key] = false;
     }
   }
