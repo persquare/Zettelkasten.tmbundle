@@ -90,7 +90,6 @@ function parse_predicate(str) {
   if (match != null) {
       text = match[1];
   }
-  console.log(text)
   
   return {'id':id, 'tag_list':tag_list, 'text':text};
 }
@@ -165,8 +164,10 @@ function filter_by_text(text, result) {
     if (!result[key]) {
       continue;
     }
-    var anfang = notes[key]._anfang;
+    var anfang = notes[key].Title;
     var text_regex = new RegExp(text, "g");
+    console.log(anfang, text_regex)
+    
     if (text_regex.exec(anfang) == null) {
       result[key] = false;
     }
