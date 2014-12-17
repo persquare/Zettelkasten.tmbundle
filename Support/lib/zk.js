@@ -24,7 +24,7 @@ function mangle_links(element) {
 
 function display_note(id) {
   var preview = document.getElementById('preview_pane')
-  var path = notes[id][0]['_path']
+  var path = notes[id]['_path']
   var obj = TextMate.system('"Markdown.pl" "' + path + '"', null);
   preview.innerHTML = obj.outputString
   format_header(preview, path);
@@ -128,7 +128,7 @@ function filter_by_tag(tag_list, result) {
     if (!result[key]) {
       continue;
     }
-    var note_tags = notes[key][0].Tags;
+    var note_tags = notes[key].Tags;
     if (intersect(tag_list, note_tags).length !== tag_list.length) {
       result[key] = false;
     }
@@ -141,7 +141,7 @@ function filter_by_id(id, result) {
     if (!result[key]) {
       continue;
     }
-    var note_id = notes[key][0].ID;
+    var note_id = notes[key].ID;
     if (note_id.substring(0, id.length) !== id) {
       result[key] = false;
     }

@@ -40,6 +40,7 @@ def split_off_header(txt):
                 continue
             in_header = False
         else:
+            # Grab the body of the note to acquire e.g. anfang from it
             if not line.strip():
                 continue
             note.append(line)
@@ -117,7 +118,7 @@ def HTML_list_item(hdr):
 def HTML_filtered_list(data):
     list = ""
     for id in data:
-        (hdr, _) = data[id]
+        hdr = data[id]
         list += HTML_list_item(hdr)
     return "&lt;div id='list_box'&gt;" + list + "&lt;/div&gt;"
 
@@ -132,9 +133,9 @@ def HTML_preview():
 all = {}
 tags = set()
 for path, txt in zk_files(ZK_DIR):
-    hdr, note = split_off_header(txt)
+    hdr, _ = split_off_header(txt)
     hdr['_path'] = path
-    all[hdr['ID']] = (hdr, note)
+    all[hdr['ID']] = hdr
     tags.update(set(hdr.get('Tags', [])))
     
 support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
