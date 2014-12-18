@@ -39,7 +39,7 @@ Tags are essential to finding notes at a later time, so take some time to figure
 Adding a `Title:` entry in the header is optional, and if not present, the first few words of the first paragraph will be used as a title in search (see below).
 
 ## Browse ZK-notes (⌥⌘K)
-This will turn up a viewer in TextMate's companion view, showing a list of notes, a search field, and a preview of the top match.
+This will turn up a viewer in TextMate's companion view, showing a list of notes, a search field, and a preview of the top match. The items in the list can be dragged and will insert a zk-link (zk://&lt;ID&gt;) when dropped. 
 
 ### Filter search
 You can filter the search results by tags (`#foo #bar ...`), by id (`@1407`), or by title text (not yet implemented).
