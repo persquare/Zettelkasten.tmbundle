@@ -117,7 +117,8 @@ def HTML_list_item(hdr):
 
 def HTML_filtered_list(data):
     list = ""
-    for id in data:
+    sorted_ids = sorted(data.keys(), reverse=True)
+    for id in sorted_ids:
         hdr = data[id]
         list += HTML_list_item(hdr)
     return "&lt;div id='list_box'&gt;" + list + "&lt;/div&gt;"
