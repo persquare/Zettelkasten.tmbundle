@@ -175,3 +175,6 @@ function filter_by_text(text, result) {
   return result;
 }
 
+function drag(ev) {
+    ev.dataTransfer.setData("text", "zk://"+ev.target.id);
+}

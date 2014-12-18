@@ -108,7 +108,8 @@ def HTML_list_item(hdr):
     _tags = ", ".join(formatted_tags)
     item = Template(
     """
-	&lt;a href='#' class='item' onclick='display_note($ID); return false;' id='$ID'&gt;
+	&lt;a href='#' class='item' draggable="true"
+ondragstart="drag(event)" onclick='display_note($ID); return false;' id='$ID'&gt;
 	    &lt;div class='anfang'&gt;$Title&lt;/div&gt;
 	    &lt;div class='tags'&gt;&lt;span&gt;$Tags&lt;/span&gt;&lt;/div&gt;
 	&lt;/a&gt;
