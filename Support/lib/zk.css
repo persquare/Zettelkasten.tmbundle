@@ -2,26 +2,34 @@
 
 div#list_box 
 {
-	width: 40%;
+	float: left;
+	width: 300px;
+/*	width: 40%;
 	overflow: auto;
 	position: absolute;
 	top: 40px;
 	bottom: 0;
-	left: 0;
+	left: 0; */
 	/* background: #eee; */
 }
 
 div#preview_box
 {
-	width: 60%;
-	float: right;
+	margin-left: 300px;
+	/* width: 60%;
+	float: right; */
 }
 
 div#preview_pane {
 	padding-left: 10px;
 	padding-right: 10px;
+	border-bottom: 1px solid #eef;
 }
 
+div#tag_box {
+	clear: both;
+	padding: 4px;
+}
 div#filter_box 
 {
 	height: 30px;
