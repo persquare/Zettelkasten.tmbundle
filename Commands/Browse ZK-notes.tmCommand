@@ -68,7 +68,7 @@ def split_off_header(txt):
     return header, ''.join(note)
 
 
-def HTML_preamble(title, dir):
+def HTML_preamble(title, dir_):
     return Template("""
     &lt;html&gt;
     &lt;head&gt;
@@ -78,7 +78,7 @@ def HTML_preamble(title, dir):
         &lt;script src="file://$dir/zk.js"&gt;&lt;/script&gt;
     &lt;/head&gt;
     &lt;body  onload='reset_list();document.getElementById("search").focus()'&gt;
-    """).substitute(title=title, dir=dir)
+    """).substitute(title=title, dir=dir_)
 
 def HTML_postamble():
     return """
@@ -117,12 +117,12 @@ ondragstart="drag(event)" onclick='display_note($ID); return false;' id='$ID'&gt
     return item
 
 def HTML_filtered_list(data):
-    list = ""
+    list_ = ""
     sorted_ids = sorted(data.keys(), reverse=True)
-    for id in sorted_ids:
-        hdr = data[id]
-        list += HTML_list_item(hdr)
-    return "&lt;div id='list_box'&gt;" + list + "&lt;/div&gt;"
+    for id_ in sorted_ids:
+        hdr = data[id_]
+        list_ += HTML_list_item(hdr)
+    return "&lt;div id='list_box'&gt;" + list_ + "&lt;/div&gt;"
 
 def HTML_preview():
     return """
