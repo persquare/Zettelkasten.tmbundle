@@ -96,6 +96,10 @@ def HTML_filter_bar():
     &lt;/div&gt;
     """
 
+def HTML_tag_bar(tags):
+    # FIXME: Clickable, sorted on frequency, exclude one-off tags.
+    return "&lt;div id='tag_box' class='tags'&gt;" + ", ".join(sorted(tags)) + "&lt;/div&gt;"
+
 def HTML_data_store(name, data):
     return Template("""
     &lt;script type="text/javascript"&gt;
@@ -152,6 +156,7 @@ print HTML_data_store("tags", list(tags)).encode('utf-8')
 print HTML_filter_bar().encode('utf-8')
 print HTML_filtered_list(notes).encode('utf-8')
 print HTML_preview().encode('utf-8')
+print HTML_tag_bar(tags).encode('utf-8')
 print HTML_postamble().encode('utf-8')
 
 </string>
