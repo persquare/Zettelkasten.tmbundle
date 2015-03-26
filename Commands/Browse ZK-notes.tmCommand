@@ -59,6 +59,9 @@ def split_off_header(txt):
     # Use anfang as title if title is not given in header
     if not 'Title' in header or not header['Title'].strip():
         header['Title'] = anfang
+    
+    header['Title'] = escape_html(header['Title'])
+    header['_anfang'] = escape_html(header['_anfang'])
         
     # Make tags a (uniform) list
     tag_str = header.get('Tags', "")
@@ -77,6 +80,18 @@ def build_database(zkdir):
         tags.update(set(hdr.get('Tags', [])))
     return notes, tags
     
+
+html_escape_table = {
+    "&amp;": "&amp;amp;",
+    '"': "&amp;quot;",
+    "'": "&amp;apos;",
+    "&gt;": "&amp;gt;",
+    "&lt;": "&amp;lt;",
+}
+
+def escape_html(text):
+    """Produce entities within text."""
+    return "".join(html_escape_table.get(c,c) for c in text)
 
 def HTML_preamble(title, dir_):
     return Template("""
