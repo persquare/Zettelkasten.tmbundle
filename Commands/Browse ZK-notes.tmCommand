@@ -18,12 +18,12 @@ ZK_DIR = os.environ.get('ZK_DIR') or os.environ.get('HOME') + "/Desktop"
 HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.*)\s*'
 ANFANG_REGEX = r'^((?:\S+\s+){1,6})'
 
-def zk_files(dir):
-    for filename in os.listdir(dir):
+def zk_files(zkdir):
+    for filename in os.listdir(zkdir):
         (name, ext) = os.path.splitext(filename)
         if not name.startswith('zk'):
             continue
-        path = os.path.join(dir, filename)
+        path = os.path.join(zkdir, filename)
         with codecs.open(path, 'r', 'utf-8') as f:
             txt = f.readlines()
         yield(path, txt)
@@ -132,21 +132,25 @@ def HTML_preview():
     &lt;/div&gt;
     """
 
-all = {}
-tags = set()
-for path, txt in zk_files(ZK_DIR):
-    hdr, _ = split_off_header(txt)
-    hdr['_path'] = path
-    all[hdr['ID']] = hdr
-    tags.update(set(hdr.get('Tags', [])))
+def build_database(zkdir):
+    notes = {}
+    tags = set()
+    for path, txt in zk_files(zkdir):
+        hdr, _ = split_off_header(txt)
+        hdr['_path'] = path
+        notes[hdr['ID']] = hdr
+        tags.update(set(hdr.get('Tags', [])))
+    return notes, tags
+
+notes, tags = build_database(ZK_DIR)
     
 support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
 
 print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
-print HTML_data_store("notes", all).encode('utf-8')
+print HTML_data_store("notes", notes).encode('utf-8')
 print HTML_data_store("tags", list(tags)).encode('utf-8')
 print HTML_filter_bar().encode('utf-8')
-print HTML_filtered_list(all).encode('utf-8')
+print HTML_filtered_list(notes).encode('utf-8')
 print HTML_preview().encode('utf-8')
 print HTML_postamble().encode('utf-8')
 
