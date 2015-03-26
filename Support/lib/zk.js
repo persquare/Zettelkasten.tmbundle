@@ -84,13 +84,9 @@ function parse_predicate(str) {
       id = match[1];
   }
   // Check for freetext
-  var text_regex = /\s+(\w+)/g;
+  var text_regex = /([^#@\s]\w+)/g;
   var text = null;
-  var match = text_regex.exec(str);
-  if (match != null) {
-      text = match[1];
-  }
-  
+
   return {'id':id, 'tag_list':tag_list, 'text':text};
 }
 
@@ -165,8 +161,7 @@ function filter_by_text(text, result) {
       continue;
     }
     var anfang = notes[key].Title;
-    var text_regex = new RegExp(text, "g");
-    console.log(anfang, text_regex)
+    var text_regex = new RegExp(text, "gi");
     
     if (text_regex.exec(anfang) == null) {
       result[key] = false;
