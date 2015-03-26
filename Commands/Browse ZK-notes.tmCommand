@@ -67,6 +67,16 @@ def split_off_header(txt):
     
     return header, ''.join(note)
 
+def build_database(zkdir):
+    notes = {}
+    tags = set()
+    for path, txt in zk_files(zkdir):
+        hdr, _ = split_off_header(txt)
+        hdr['_path'] = path
+        notes[hdr['ID']] = hdr
+        tags.update(set(hdr.get('Tags', [])))
+    return notes, tags
+    
 
 def HTML_preamble(title, dir_):
     return Template("""
@@ -136,18 +146,8 @@ def HTML_preview():
     &lt;/div&gt;
     """
 
-def build_database(zkdir):
-    notes = {}
-    tags = set()
-    for path, txt in zk_files(zkdir):
-        hdr, _ = split_off_header(txt)
-        hdr['_path'] = path
-        notes[hdr['ID']] = hdr
-        tags.update(set(hdr.get('Tags', [])))
-    return notes, tags
 
 notes, tags = build_database(ZK_DIR)
-    
 support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
 
 print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
