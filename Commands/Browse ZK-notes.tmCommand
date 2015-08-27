@@ -102,7 +102,7 @@ def HTML_preamble(title, dir_):
         &lt;link rel="stylesheet" type="text/css" href="file://$dir/zk.css"&gt;
         &lt;script src="file://$dir/zk.js"&gt;&lt;/script&gt;
     &lt;/head&gt;
-    &lt;body  onload='reset_list();document.getElementById("search").focus()'&gt;
+    &lt;body onload='reset_list();document.getElementById("search").focus();add_tag_click()'&gt;
     """).substitute(title=title, dir=dir_)
 
 def HTML_postamble():
@@ -115,7 +115,7 @@ def HTML_filter_bar():
     return """
     &lt;div id='filter_box'&gt;
 	    &lt;div&gt;Filter results:
-            &lt;input type='search' id='search' onkeyup="filter_results(this)" onsearch='filter_results(this)' /&gt;
+            &lt;input type='search' id='search' onkeyup='filter_results(this) onsubmit='filter_results(this) oninput='filter_results(this)' /&gt;
             &lt;span id='results'&gt;&lt;/span&gt;
         &lt;/div&gt;
     &lt;/div&gt;

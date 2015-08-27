@@ -173,3 +173,60 @@ function filter_by_text(text, result) {
 function drag(ev) {
     ev.dataTransfer.setData("text", "zk://"+ev.target.id);
 }
+
+// See http://stackoverflow.com/a/19655662/1007047
+function add_tag_click() {
+  var classname = document.getElementsByClassName("tags");
+
+  var filter_by_tag = function(event) {
+    var word = getWordAtPoint(event.target, event.x, event.y)
+    console.log(word);
+    if(word === null) {
+      return;
+    }     
+    event.preventDefault();
+    event.stopPropagation();
+    var search = document.getElementById("search");
+    search.value = "#"+word;
+    filter_results(search)
+  };
+
+  for(var i=0;i<classname.length;i++) {
+    classname[i].addEventListener('click', filter_by_tag, false);
+  }
+}
+
+// See http://stackoverflow.com/a/3710561/1007047
+function getWordAtPoint(elem, x, y) {
+  if(elem.nodeType == elem.TEXT_NODE) {
+    var range = elem.ownerDocument.createRange();
+    range.selectNodeContents(elem);
+    var currentPos = 0;
+    var endPos = range.endOffset;
+    while(currentPos+1 < endPos) {
+      range.setStart(elem, currentPos);
+      range.setEnd(elem, currentPos+1);
+      if(range.getBoundingClientRect().left <= x && range.getBoundingClientRect().right  >= x &&
+         range.getBoundingClientRect().top  <= y && range.getBoundingClientRect().bottom >= y) {
+        range.expand("word");
+        var ret = range.toString();
+        range.detach();
+        return(ret);
+      }
+      currentPos += 1;
+    }
+  } else {
+    for(var i = 0; i < elem.childNodes.length; i++) {
+      var range = elem.childNodes[i].ownerDocument.createRange();
+      range.selectNodeContents(elem.childNodes[i]);
+      if(range.getBoundingClientRect().left <= x && range.getBoundingClientRect().right  >= x &&
+         range.getBoundingClientRect().top  <= y && range.getBoundingClientRect().bottom >= y) {
+        range.detach();
+        return(getWordAtPoint(elem.childNodes[i], x, y));
+      } else {
+        range.detach();
+      }
+    }
+  }
+  return(null);
+}
