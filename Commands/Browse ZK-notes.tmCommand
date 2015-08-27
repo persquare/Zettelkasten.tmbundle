@@ -133,7 +133,7 @@ def HTML_data_store(name, data):
     """).substitute(key=name, json_data=json.dumps(data, indent=2))    
 
 def HTML_list_item(hdr):
-    formatted_tags = [u'#'+tag for tag in hdr.get('Tags', [])]
+    formatted_tags = [tag for tag in hdr.get('Tags', [])]
     _tags = ", ".join(formatted_tags)
     item = Template(
     """
