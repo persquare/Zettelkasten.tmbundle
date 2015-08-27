@@ -59,15 +59,15 @@ def split_off_header(txt):
     # Use anfang as title if title is not given in header
     if not 'Title' in header or not header['Title'].strip():
         header['Title'] = anfang
-    
+
     header['Title'] = escape_html(header['Title'])
     header['_anfang'] = escape_html(header['_anfang'])
-        
+
     # Make tags a (uniform) list
     tag_str = header.get('Tags', "")
     tags = [t.strip(' ,') for t in tag_str.split()]
     header['Tags'] = tags
-    
+
     return header, ''.join(note)
 
 def build_database(zkdir):
@@ -79,7 +79,7 @@ def build_database(zkdir):
         notes[hdr['ID']] = hdr
         tags.update(set(hdr.get('Tags', [])))
     return notes, tags
-    
+
 
 html_escape_table = {
     "&amp;": "&amp;amp;",
@@ -130,16 +130,15 @@ def HTML_data_store(name, data):
     &lt;script type="text/javascript"&gt;
         $key = $json_data;
     &lt;/script&gt;
-    """).substitute(key=name, json_data=json.dumps(data, indent=2))    
+    """).substitute(key=name, json_data=json.dumps(data, indent=2))
 
 def HTML_list_item(hdr):
     formatted_tags = [tag for tag in hdr.get('Tags', [])]
     _tags = ", ".join(formatted_tags)
     item = Template(
     """
-	&lt;a href='#' class='item' draggable="true"
-ondragstart="drag(event)" onclick='display_note($ID); return false;' id='$ID'&gt;
-	    &lt;div class='anfang'&gt;$Title&lt;/div&gt;
+	&lt;a href='#' class='item' onclick='display_note($ID); return false;' id='$ID'&gt;
+	    &lt;div class='anfang' draggable='true' ondragstart='drag(event)'&gt;$Title&lt;/div&gt;
 	    &lt;div class='tags'&gt;&lt;span&gt;$Tags&lt;/span&gt;&lt;/div&gt;
 	&lt;/a&gt;
     """).substitute(hdr, Tags=_tags)
