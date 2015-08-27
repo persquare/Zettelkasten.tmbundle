@@ -171,7 +171,7 @@ function filter_by_text(text, result) {
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("text", "zk://"+ev.target.parentElement.id);
+    ev.dataTransfer.setData("text", "zk://"+ev.target.parentElement.id+" \""+ev.target.innerHTML+"\"");
 }
 
 // See http://stackoverflow.com/a/19655662/1007047
