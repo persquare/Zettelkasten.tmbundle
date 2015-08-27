@@ -98,7 +98,7 @@ def HTML_preamble(title, dir_):
     &lt;html&gt;
     &lt;head&gt;
         &lt;title&gt;$title&lt;/title&gt;
-        &lt;base href="file://$dir/" target="_blank"&gt;
+        &lt;base href="file://$dir/"&gt;
         &lt;link rel="stylesheet" type="text/css" href="file://$dir/zk.css"&gt;
         &lt;script src="file://$dir/zk.js"&gt;&lt;/script&gt;
     &lt;/head&gt;
