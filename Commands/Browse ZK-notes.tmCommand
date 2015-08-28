@@ -171,10 +171,10 @@ support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
 print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
 print HTML_data_store("notes", notes).encode('utf-8')
 print HTML_data_store("tags", tags).encode('utf-8')
+print HTML_tag_bar(tags).encode('utf-8')
 print HTML_filter_bar().encode('utf-8')
 print HTML_filtered_list(notes).encode('utf-8')
 print HTML_preview().encode('utf-8')
-print HTML_tag_bar(tags).encode('utf-8')
 print HTML_postamble().encode('utf-8')
 
 </string>
