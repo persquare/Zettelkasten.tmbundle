@@ -72,13 +72,17 @@ def split_off_header(txt):
 
 def build_database(zkdir):
     notes = {}
-    tags = set()
+    tags = {}
     for path, txt in zk_files(zkdir):
         hdr, _ = split_off_header(txt)
         hdr['_path'] = path
         notes[hdr['ID']] = hdr
-        tags.update(set(hdr.get('Tags', [])))
-    return notes, tags
+        note_tags = hdr.get('Tags', [])
+        # Create a truncated tag list
+        for tag in note_tags:
+            tags[tag] = tags.setdefault(tag, 0) + 1
+        taglist = [tag for tag, count in tags.iteritems() if count &gt; 1]
+    return notes, taglist  
 
 
 html_escape_table = {
@@ -166,7 +170,7 @@ support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
 
 print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
 print HTML_data_store("notes", notes).encode('utf-8')
-print HTML_data_store("tags", list(tags)).encode('utf-8')
+print HTML_data_store("tags", tags).encode('utf-8')
 print HTML_filter_bar().encode('utf-8')
 print HTML_filtered_list(notes).encode('utf-8')
 print HTML_preview().encode('utf-8')
