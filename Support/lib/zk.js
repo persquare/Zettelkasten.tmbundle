@@ -180,10 +180,13 @@ function add_tag_click() {
 
   var filter_by_tag = function(event) {
     var word = getWordAtPoint(event.target, event.x, event.y)
-    console.log(word);
     if(word === null) {
       return;
-    }     
+    }
+    word = word.replace(/[, ]/g,''); 
+    if(word === '') {
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
     var search = document.getElementById("search");
