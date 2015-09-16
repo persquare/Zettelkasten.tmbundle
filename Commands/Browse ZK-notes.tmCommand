@@ -119,7 +119,7 @@ def HTML_filter_bar():
     return """
     &lt;div id='filter_box'&gt;
 	    &lt;div&gt;Filter results:
-            &lt;input type='search' id='search' onkeyup='filter_results(this) onsubmit='filter_results(this) oninput='filter_results(this)' /&gt;
+            &lt;input type='search' id='search' onkeyup='filter_results(this)' onsubmit='filter_results(this)' oninput='filter_results(this)'/&gt;
             &lt;span id='results'&gt;&lt;/span&gt;
         &lt;/div&gt;
     &lt;/div&gt;
