@@ -81,8 +81,8 @@ def build_database(zkdir):
         # Create a truncated tag list
         for tag in note_tags:
             tags[tag] = tags.setdefault(tag, 0) + 1
-        taglist = [tag for tag, count in tags.iteritems() if count &gt; 1]
-    return notes, taglist  
+        shortlist = [tag for tag, count in tags.iteritems() if count &gt; 2]
+    return notes, tags.keys(), shortlist  
 
 
 html_escape_table = {
@@ -165,13 +165,13 @@ def HTML_preview():
     """
 
 
-notes, tags = build_database(ZK_DIR)
+notes, tags, tag_shortlist = build_database(ZK_DIR)
 support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
 
 print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
 print HTML_data_store("notes", notes).encode('utf-8')
 print HTML_data_store("tags", tags).encode('utf-8')
-print HTML_tag_bar(tags).encode('utf-8')
+print HTML_tag_bar(tag_shortlist).encode('utf-8')
 print HTML_filter_bar().encode('utf-8')
 print HTML_filtered_list(notes).encode('utf-8')
 print HTML_preview().encode('utf-8')
