@@ -9,7 +9,7 @@ import argparse
 from datetime import datetime
 
 def create_zk(path, author='', body=None):
-    template = "Date: %s\nAuthor: %s\nID: %s\nTags: \n\n"
+    template = "Date: %s\nAuthor: %s\nID: %s\nTags: \nTitle: \n\n"
     time = datetime.now()
     date = time.strftime("%Y-%m-%d %H:%M:%S")
     zkid = time.strftime("%y%m%d%H%M%S")
@@ -24,7 +24,7 @@ def create_zk(path, author='', body=None):
     return path
 
 def txmt_URI(path):
-    uri = "txmt://open?url=file://%s&line=6&column=0" % path
+    uri = "txmt://open?url=file://%s&line=7&column=0" % path
     return uri
 
 if __name__ == '__main__':
