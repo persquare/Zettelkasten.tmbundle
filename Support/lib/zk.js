@@ -45,14 +45,19 @@ function highlight_item(id) {
 }
 
 function reset_list() {
-  var count = 0
-  for (var key in notes) {
-    count++
-    document.getElementById(key).style.display = 'block'
-    if (count == 1) {
-      display_note(key)
+    var count = 0;
+    for (var key in notes) {
+        // Don't display archived notes by defa  //}1ult
+        if (notes[key].Tags.includes('archived')) {
+            document.getElementById(key).style.display = 'none';
+            continue;
+        }
+        count++;
+        document.getElementById(key).style.display = 'block';
+        if (count == 1) {
+            display_note(key);
+        }
     }
-  }
 }
 
 // http://stackoverflow.com/a/16227294
@@ -104,9 +109,8 @@ function filter_results(search) {
     result[key] = true;
   } 
   // Filter on all predicates
-  if (predicate.tag_list.length > 0) {
-    result = filter_by_tag(predicate.tag_list, result);
-  }
+  // Always filter on tags to support 'archived' tag
+  result = filter_by_tag(predicate.tag_list, result);
   if (predicate.id != null) {
     result = filter_by_id(predicate.id, result);
   }
@@ -135,7 +139,10 @@ function filter_by_tag(tag_list, result) {
       continue;
     }
     var note_tags = notes[key].Tags;
-    if (intersect(tag_list, note_tags).length !== tag_list.length) {
+    // Special handling of 'archived' tag
+    var hidden = notes[key].Tags.includes('archived') && !tag_list.includes('archived')
+    hidden = hidden || intersect(tag_list, note_tags).length !== tag_list.length
+    if (hidden) {
       result[key] = false;
     }
   }
