@@ -80,7 +80,7 @@ function parse_predicate(str) {
       tag_list.push(match[1]);
       var match = tag_regex.exec(str);
   }
-  tag_list = intersect(tag_list, tags);
+  tag_list = intersect(tag_list, tags.concat(['untagged']));
   // Check for id (@)
   var id_regex = /@(\d+)/g;
   var id = null;
@@ -139,8 +139,13 @@ function filter_by_tag(tag_list, result) {
       continue;
     }
     var note_tags = notes[key].Tags;
+    // Untagged handling
+    if (tag_list.length === 1 && tag_list[0] === 'untagged') {
+      result[key] = (note_tags.length === 0);
+      continue;
+    }
     // Special handling of 'archived' tag
-    var hidden = notes[key].Tags.includes('archived') && !tag_list.includes('archived')
+    var hidden = note_tags.includes('archived') && !tag_list.includes('archived')
     hidden = hidden || intersect(tag_list, note_tags).length !== tag_list.length
     if (hidden) {
       result[key] = false;
