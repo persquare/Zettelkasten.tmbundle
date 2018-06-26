@@ -21,7 +21,7 @@ ANFANG_REGEX = r'^((?:\S+\s+){1,6})'
 def zk_files(zkdir):
     for filename in os.listdir(zkdir):
         (name, ext) = os.path.splitext(filename)
-        if not name.startswith('zk'):
+        if not name.startswith('zk') or ext == '.deleted':
             continue
         path = os.path.join(zkdir, filename)
         with codecs.open(path, 'r', 'utf-8') as f:

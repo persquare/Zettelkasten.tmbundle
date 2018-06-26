@@ -1,7 +1,14 @@
 function format_header(element, path) {
   var header = element.getElementsByTagName('p')[0]
   var text = header.innerHTML;
-  header.innerHTML = '<div class="header"><p><a href="txmt://open?url=file://' + path + '">Edit…</a><p><pre class="header">' + text + '</pre></div>';
+  header.innerHTML = `<div class="header">
+      <p><a href="txmt://open?url=file://${path}">
+      <img src="if_note_370077.svg" alt="Edit" width="32" height="32" />
+      </a>
+      <a href="x-zk-url://delete?zkfile=${path}">
+      <img src="if_delete_370086.svg" alt="Delete" width="32" height="32" />
+      </a><p>
+      <pre class="header">${text}</pre></div>`;
 }
 
 function open_zk_link(element) {
@@ -12,12 +19,14 @@ function open_zk_link(element) {
 
 function mangle_links(element) {
   var links = element.getElementsByTagName('a');
+  var re_http = /^https?:\/\//;
+  var re_zk = /^zk:\/\//;
   for (var i = 0; i < links.length; i++) {
     var url = links[i].href;
-    if (url.substring(0, 5) === 'zk://') {
-      links[i].onclick = open_zk_link;
-    } else if (url.substring(0, 7) !== 'txmt://') {
-      links[i].innerHTML += '<img src="external.gif" />'
+    if (re_zk.test(url)) {
+        links[i].onclick = open_zk_link;
+    } else if (re_http.test(url)) {
+        links[i].innerHTML += '<img src="if_globe_646196.svg" width="12" height="12" />'
     }
   }
 }

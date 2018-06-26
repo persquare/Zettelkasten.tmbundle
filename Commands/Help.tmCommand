@@ -50,6 +50,10 @@ Filtering by `ID` is a simple way to filter by date, and will do partial matchin
 
 Filtering by a text string to match against the title is on the ToDo list.
 
+### Archive notes
+The tag `#archived` has a special meaning: Notes tagged with `#archived` will not be shown by default. 
+This is useful for notes that are e.g. out-of-date but should be kept for some other reason.
+
 ## Setup
 You want to set `ZK_DIR` environment variable to point to the directory where your notes are stored, e.g. `$HOME/Dropbox/Notes`. This can be done in the TextMate's preferences, or in the bundle settings, see [TextMate's documentation][3] for details. The default location if you don't set `ZK_DIR` is `$HOME/notes`, and if you're OK with that, just make sure the directory exists. 
 
@@ -62,13 +66,23 @@ An example of a putting `zk` to good use is to create a service that allows you 
 
 ![Service example](lib/ZKService.png "ZK Service")
 
+## Experimental
+There is a URL scheme handler in the `Support/bin` folder that allows more actions to be taken from the ZK-view, but it might also pose a security risk.
+To enable it, go into the `Support/bin` folder and double-click it to register it as the `x-zk-url` URL scheme handler. 
+
+
 ## Credits
 Note keeping and name inspired by [Christian Tietze's writings][1]  
-Code inspired by [ImageBrowser][2] for TextMate2
+Code inspired by [ImageBrowser][2] for TextMate2  
+Icons in ZK-view by [Weblab X][4] licenced under [CC BY 3.0][5]
+
 
 [1]: http://christiantietze.de/posts/tags/zettelkasten/
 [2]: https://github.com/textmate/imagebrowser.tmbundle
 [3]: http://manual.macromates.com/en/environment_variables.html
+[4]: http://www.weblabx.com
+[5]: https://creativecommons.org/licenses/by/3.0/
+
 
 MARKDOWN
 
