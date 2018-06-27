@@ -12,6 +12,13 @@ import codecs
 from datetime import datetime
 # import json
 
+# 
+#
+#
+#
+#
+#
+
 HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.*)\s*'
 
 def read_original(filepath):
@@ -41,17 +48,21 @@ def clone_header(header, index):
     hdr['ID'] = zkid 
     return hdr 
     
+def _file_path(path, header):
+    filename = "zk" + header['ID'] + ".md"
+    path = os.path.join(path, filename)
+    return path
+    
 
 def write_zk(path, header, body=None):
     header.setdefault('Title', '')
     template = "Date: {Date}\nAuthor: {Author}\nID: {ID}\nTags: {Tags}\nTitle: {Title}\n\n"
-
-    filename = "zk" + header['ID'] + ".md"
-    path = os.path.join(path, filename)
+    path = _file_path(path, header)
     with open(path, 'w') as f:
         f.write(template.format(**header))
         if body:
             f.write(body)
+
 
 # def txmt_URI(path):
 #     uri = "txmt://open?url=file://%s&amp;line=6&amp;column=0" % path
@@ -61,42 +72,45 @@ def write_zk(path, header, body=None):
 path = os.environ['TM_DIRECTORY']
 txt = read_original(os.environ['TM_FILEPATH']) 
 header, n = original_header(txt)
-# print header
-# FIXME: Properly parse selection info
-split_line = int(os.environ.get('TM_SELECTION', len(txt)))
+content2 = os.environ.get('TM_SELECTED_TEXT', '')
 
-link_to_parent = "\nThis note is part of a [compilation][parent].\n[parent]: zk://{ID}\n".format(**header)
+link_to_related = "\nThis note is related to [{Title}][related].\n[related]: zk://{ID}\n".format(**header)
+header2 = clone_header(header, None)
+link_to_new = "\nThis note is related to [{Title}][related].\n[related]: zk://{ID}\n".format(**header2)
 
-header1 = clone_header(header, 1)
-header2 = clone_header(header, 2)
-body1 = "".join(txt[n:split_line] + [link_to_parent])
-body2 = "".join(txt[split_line:] + [link_to_parent])
-write_zk(path, header1, body1)
+
+body1 = "".join(txt + [link_to_new])
+body2 = content2 + link_to_related
+
+
+write_zk(path, header, body1)
 write_zk(path, header2, body2)
-child_ids = [header1['ID'], header2['ID']]
-children = ["- [{}][child{}]\n".format(item, idx) for idx, item in enumerate(child_ids)] 
-child_links = ["[child{}]: zk://{}\n".format(idx, item) for idx, item in enumerate(child_ids)]
-original_content = txt[n:]
-body = "".join(["This is a compilation of the following notes:\n\n"] + children + ["\n"] + child_links + ["\n----\n"] + original_content)
+# child_ids = [header1['ID'], header2['ID']]
+# children = ["- [{}][child{}]\n".format(item, idx) for idx, item in enumerate(child_ids)]
+# child_links = ["[child{}]: zk://{}\n".format(idx, item) for idx, item in enumerate(child_ids)]
+# original_content = txt[n:]
+# body = "".join(["This is a compilation of the following notes:\n\n"] + children + ["\n"] + child_links + ["\n----\n"] + original_content)
 
-write_zk(path, header, body)
-# print header</string>
+# print header
+import subprocess
+
+subprocess.call(["open", "txmt://open?url=file://"+_file_path(path, header2)])
+
+</string>
 	<key>input</key>
 	<string>none</string>
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>name</key>
-	<string>Split Note at Cursor</string>
+	<string>New Linked ZK-note</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
 	<string>text</string>
 	<key>outputLocation</key>
-	<string>discard</string>
-	<key>scope</key>
-	<string>text.html.markdown</string>
+	<string>newWindow</string>
 	<key>uuid</key>
-	<string>B6178231-CEDC-469F-8ED4-4ECCF069DBB4</string>
+	<string>0CA068E9-9DB0-4D66-B91D-775089CD2E73</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>
