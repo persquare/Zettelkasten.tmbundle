@@ -10,14 +10,6 @@ import os
 import re
 import codecs
 from datetime import datetime
-# import json
-
-# 
-#
-#
-#
-#
-#
 
 HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.*)\s*'
 
@@ -36,15 +28,12 @@ def original_header(txt):
         header[match.group(1)] = match.group(2)
     return header, len(header)
 
-def clone_header(header, index):
+def clone_header(header):
     hdr = dict(header)
-    title = hdr.setdefault('Title', 'Split note')
-    hdr['Title'] = title + ' ({})'.format(index)
+    # hdr.setdefault('Title', 'Linked note')
     time = datetime.now()
     hdr['Date'] = time.strftime("%Y-%m-%d %H:%M:%S")
     zkid = time.strftime("%y%m%d%H%M%S")
-    if index is not None:
-        zkid = zkid + str(index)
     hdr['ID'] = zkid 
     return hdr 
     
@@ -72,29 +61,24 @@ def write_zk(path, header, body=None):
 path = os.environ['TM_DIRECTORY']
 txt = read_original(os.environ['TM_FILEPATH']) 
 header, n = original_header(txt)
-content2 = os.environ.get('TM_SELECTED_TEXT', '')
+new_title = os.environ.get('TM_SELECTED_TEXT', 'New note')
 
-link_to_related = "\nThis note is related to [{Title}][related].\n[related]: zk://{ID}\n".format(**header)
-header2 = clone_header(header, None)
-link_to_new = "\nThis note is related to [{Title}][related].\n[related]: zk://{ID}\n".format(**header2)
+link_to_original = "\nThis note is related to [{Title}](zk://{ID})\n".format(**header)
 
-
-body1 = "".join(txt + [link_to_new])
-body2 = content2 + link_to_related
+new_header = clone_header(header)
+new_header['Title'] = new_title
+link_to_new = "\nSee [{Title}](zk://{ID})\n".format(**new_header)
 
 
-write_zk(path, header, body1)
-write_zk(path, header2, body2)
-# child_ids = [header1['ID'], header2['ID']]
-# children = ["- [{}][child{}]\n".format(item, idx) for idx, item in enumerate(child_ids)]
-# child_links = ["[child{}]: zk://{}\n".format(idx, item) for idx, item in enumerate(child_ids)]
-# original_content = txt[n:]
-# body = "".join(["This is a compilation of the following notes:\n\n"] + children + ["\n"] + child_links + ["\n----\n"] + original_content)
+body = "".join(txt[n:] + [link_to_new])
+new_body = link_to_original
 
-# print header
+
+write_zk(path, header, body)
+write_zk(path, new_header, new_body)
+
 import subprocess
-
-subprocess.call(["open", "txmt://open?url=file://"+_file_path(path, header2)])
+subprocess.call(["open", "txmt://open?url=file://"+_file_path(path, new_header)])
 
 </string>
 	<key>input</key>
