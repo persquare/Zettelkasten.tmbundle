@@ -192,7 +192,11 @@ function filter_by_text(text, result) {
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("text", "zk://"+ev.target.parentElement.id+" \""+ev.target.innerHTML+"\"");
+    var content = "zk://"+ev.target.parentElement.id+" \""+ev.target.innerHTML+"\"";
+    if (event.altKey) {
+        content = "["+ev.target.innerHTML+"](zk://"+ev.target.parentElement.id+")";
+    }
+    ev.dataTransfer.setData("text", content);
 }
 
 // See http://stackoverflow.com/a/19655662/1007047
