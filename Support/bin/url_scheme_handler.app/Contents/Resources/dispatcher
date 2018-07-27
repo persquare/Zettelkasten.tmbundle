@@ -7,7 +7,7 @@ import logging
 import logging.handlers
 
 def delete(zkfile):
-    zk_dir = os.environ.get('ZK_DIR') or os.path.join(os.environ.get('HOME'), 'notes')
+    zk_dir = os.environ.get('ZK_DIR') or os.path.join(os.environ.get('HOME'), '.zk/Notes')
     for f in zkfile:
         # Validate path
         if not f.startswith(zk_dir):

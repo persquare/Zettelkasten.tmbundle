@@ -31,10 +31,13 @@ if __name__ == '__main__':
 
     # Defaults
     author = os.getenv('ZK_AUTHOR', pwd.getpwuid(os.getuid())[4])
-    path = os.getenv('ZK_DIR', '~/Desktop')
+    path = os.getenv('ZK_DIR', '~/.zk/Notes')
     path = os.path.expanduser(path)
     path = os.path.expandvars(path)
     path = os.path.abspath(path)
+    
+    if not os.path.isdir(path):
+        os.makedirs(path)
 
     long_desc = """
     Create a zk-note file with some defaults filled in.
