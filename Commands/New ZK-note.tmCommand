@@ -25,8 +25,10 @@
 # create the note in is read from environment variable 'ZK_DIR' if it exists,
 # otherwise it is set to $HOME/Desktop.
 
+ZK="${ZK_TOOL-zk}"
+
 if [ -n "$TM_SELECTED_TEXT" ]; then 
-  path=`echo "${TM_SELECTED_TEXT}" | zk --txmt -`
+  path=`echo "${TM_SELECTED_TEXT}" | ${ZK} --txmt -`
 else
   path=`zk --txmt`
 fi

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>ZK-tool</string>
+	<key>settings</key>
+	<dict>
+		<key>shellVariables</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>ZK_TOOL</string>
+				<key>value</key>
+				<string>/Users/eperspe/Source/FOSS/ZK2/zk_tool.py</string>
+			</dict>
+		</array>
+	</dict>
+	<key>uuid</key>
+	<string>69DA1A3A-DE85-438D-8CF5-E71E563C24EC</string>
+</dict>
+</plist>
