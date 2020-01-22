@@ -7,7 +7,7 @@
 		<string>zk</string>
 	</array>
 	<key>name</key>
-	<string>Zettelkasten</string>
+	<string>ZK2</string>
 	<key>patterns</key>
 	<array>
 		<dict>
@@ -33,6 +33,6 @@
 	<key>scopeName</key>
 	<string>text.html.markdown.zk</string>
 	<key>uuid</key>
-	<string>CD6156B4-73D6-4DB7-907A-66722AF05579</string>
+	<string>C6796A0D-76AE-4E50-A7BF-DE99D131A0C8</string>
 </dict>
 </plist>

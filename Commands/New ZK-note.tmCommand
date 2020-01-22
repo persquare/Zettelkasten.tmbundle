@@ -30,7 +30,7 @@ ZK="${ZK_TOOL-zk}"
 if [ -n "$TM_SELECTED_TEXT" ]; then 
   path=`echo "${TM_SELECTED_TEXT}" | ${ZK} --txmt -`
 else
-  path=`zk --txmt`
+  path=`${ZK} --txmt`
 fi
 if [[ "$path" ]]; then
 	open "$path" 
