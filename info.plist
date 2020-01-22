@@ -8,19 +8,19 @@
 	<string>Per Persson</string>
 	<key>description</key>
 	<string>A note keeper and browser for TextMate 2.</string>
+	<key>mainMenu</key>
+	<dict>
+		<key>items</key>
+		<array>
+			<string>DB068847-F315-4F90-8B45-61A8F5538393</string>
+			<string>E097E882-B7E5-4EE1-AE73-BA2AF90D9900</string>
+			<string>------------------------------------</string>
+			<string>E3D5C273-DB6F-47B6-A205-C68B9433EFB3</string>
+		</array>
+	</dict>
 	<key>name</key>
 	<string>Zettelkasten</string>
 	<key>uuid</key>
 	<string>635DC691-0D12-4EA6-8C75-A087C72CDB91</string>
-  <key>mainMenu</key>
-  <dict>
-      <key>items</key>
-      <array>
-          <string>DB068847-F315-4F90-8B45-61A8F5538393</string>
-          <string>E097E882-B7E5-4EE1-AE73-BA2AF90D9900</string>
-          <string>------------------------------------</string>
-          <string>E3D5C273-DB6F-47B6-A205-C68B9433EFB3</string>
-      </array>
-  </dict>
 </dict>
 </plist>

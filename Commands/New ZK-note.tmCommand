@@ -26,12 +26,12 @@
 # otherwise it is set to $HOME/Desktop.
 
 if [ -n "$TM_SELECTED_TEXT" ]; then 
-  path=`echo ${TM_SELECTED_TEXT} | zk --txmt -`
+  path=`echo "${TM_SELECTED_TEXT}" | zk --txmt -`
 else
   path=`zk --txmt`
 fi
 if [[ "$path" ]]; then
-	open $path 
+	open "$path" 
 fi
 </string>
 	<key>input</key>
