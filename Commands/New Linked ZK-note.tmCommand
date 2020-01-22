@@ -85,6 +85,8 @@ subprocess.call(["open", "txmt://open?url=file://"+_file_path(path, new_header)]
 	<string>none</string>
 	<key>inputFormat</key>
 	<string>text</string>
+	<key>isDisabled</key>
+	<true/>
 	<key>name</key>
 	<string>New Linked ZK-note</string>
 	<key>outputCaret</key>

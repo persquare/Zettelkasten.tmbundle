@@ -85,6 +85,8 @@ write_zk(path, header, body)
 	<string>none</string>
 	<key>inputFormat</key>
 	<string>text</string>
+	<key>isDisabled</key>
+	<true/>
 	<key>name</key>
 	<string>Split Note at Cursor</string>
 	<key>outputCaret</key>
