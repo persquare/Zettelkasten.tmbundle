@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>URL</string>
+	<key>scope</key>
+	<string>text.html.markdown.zk</string>
+	<key>settings</key>
+	<dict>
+		<key>shellVariables</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>ZK_HOST</string>
+				<key>value</key>
+				<string>http://localhost</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>ZK_PORT</string>
+				<key>value</key>
+				<integer>9075</integer>
+			</dict>
+		</array>
+	</dict>
+	<key>uuid</key>
+	<string>009728AD-D86C-465D-BF5F-7B45952438F8</string>
+</dict>
+</plist>

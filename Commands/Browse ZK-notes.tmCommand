@@ -6,177 +6,29 @@
 	<string>nop</string>
 	<key>command</key>
 	<string>#!/usr/bin/env python
-# encoding: utf-8
+
 import os
-import re
-import codecs
-import json
-from string import Template
 
-ZK_DIR = os.environ.get('ZK_DIR') or os.environ.get('HOME') + "/Desktop"
+host = os.environ.get('ZK_HOST', 'http://localhost')
+port = os.environ.get('ZK_PORT', 9075)
+url = "{}:{}".format(host, port)
 
-HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.*)\s*'
-ANFANG_REGEX = r'^((?:\S+\s+){1,6})'
-
-def zk_files(zkdir):
-    for filename in os.listdir(zkdir):
-        (name, ext) = os.path.splitext(filename)
-        if not name.startswith('zk') or ext == '.deleted':
-            continue
-        path = os.path.join(zkdir, filename)
-        with codecs.open(path, 'r', 'utf-8') as f:
-            txt = f.readlines()
-        yield(path, txt)
-
-def split_off_header(txt):
-    header = {}
-    note = []
-    in_header = True
-    for line in txt:
-        if in_header:
-            match = re.match(HEADER_LINE_REGEX, line)
-            if  match:
-                header[match.group(1)] = match.group(2)
-                continue
-            in_header = False
-        else:
-            # Grab the body of the note to acquire e.g. anfang from it
-            if not line.strip():
-                continue
-            note.append(line)
-
-    # Anfang is the first six words in the note
-    anfang = u'&lt;Empty note&gt;'
-    if note:
-        match = re.match(ANFANG_REGEX, note[0])
-        if match:
-            anfang = match.group(1)
-        else:
-            anfang = note[0]
-        anfang = anfang.rstrip() + u' …'
-
-    header['_anfang'] = anfang
-    # Use anfang as title if title is not given in header
-    if not 'Title' in header or not header['Title'].strip():
-        header['Title'] = anfang
-
-    header['Title'] = escape_html(header['Title'])
-    header['_anfang'] = escape_html(header['_anfang'])
-
-    # Make tags a (uniform) list
-    tag_str = header.get('Tags', "")
-    tags = [t.strip(' ,') for t in tag_str.split()]
-    header['Tags'] = tags
-
-    return header, ''.join(note)
-
-def build_database(zkdir):
-    notes = {}
-    tags = {}
-    for path, txt in zk_files(zkdir):
-        hdr, _ = split_off_header(txt)
-        hdr['_path'] = path
-        notes[hdr['ID']] = hdr
-        note_tags = hdr.get('Tags', [])
-        # Create a truncated tag list
-        for tag in note_tags:
-            tags[tag] = tags.setdefault(tag, 0) + 1
-        shortlist = [tag for tag, count in tags.iteritems() if count &gt; 2]
-    return notes, tags.keys(), shortlist  
-
-
-html_escape_table = {
-    "&amp;": "&amp;amp;",
-    '"': "&amp;quot;",
-    "'": "&amp;apos;",
-    "&gt;": "&amp;gt;",
-    "&lt;": "&amp;lt;",
-}
-
-def escape_html(text):
-    """Produce entities within text."""
-    return "".join(html_escape_table.get(c,c) for c in text)
-
-def HTML_preamble(title, dir_):
-    return Template("""
-    &lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;$title&lt;/title&gt;
-        &lt;base href="file://$dir/"&gt;
-        &lt;link rel="stylesheet" type="text/css" href="file://$dir/zk.css"&gt;
-        &lt;script src="file://$dir/zk.js"&gt;&lt;/script&gt;
-    &lt;/head&gt;
-    &lt;body onload='reset_list();document.getElementById("search").focus();add_tag_click()'&gt;
-    """).substitute(title=title, dir=dir_)
-
-def HTML_postamble():
-    return """
-    &lt;/body&gt;
+def open_in_htmlview(url):
+   return """
+    &lt;!DOCTYPE HTML&gt;
+    &lt;html lang="en-US"&gt;
+        &lt;head&gt;
+            &lt;meta charset="UTF-8"&gt;
+            &lt;script type="text/javascript"&gt;
+                window.location.href = "%s"
+            &lt;/script&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+        &lt;/body&gt;
     &lt;/html&gt;
-    """
+    """ % (url)
 
-def HTML_filter_bar():
-    return """
-    &lt;div id='filter_box'&gt;
-	    &lt;div&gt;Filter results:
-            &lt;input type='search' id='search' onkeyup='filter_results(this)' onsubmit='filter_results(this)' oninput='filter_results(this)'/&gt;
-            &lt;span id='results'&gt;&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    """
-
-def HTML_tag_bar(tags):
-    # FIXME: Clickable, sorted on frequency, exclude one-off tags.
-    return "&lt;div id='tag_box' class='tags'&gt;" + ", ".join(sorted(tags)) + "&lt;/div&gt;"
-
-def HTML_data_store(name, data):
-    return Template("""
-    &lt;script type="text/javascript"&gt;
-        $key = $json_data;
-    &lt;/script&gt;
-    """).substitute(key=name, json_data=json.dumps(data, indent=2))
-
-def HTML_list_item(hdr):
-    formatted_tags = [tag for tag in hdr.get('Tags', [])]
-    _tags = ", ".join(formatted_tags)
-    item = Template(
-    """
-	&lt;a href='#' class='item' onclick='display_note($ID); return false;' id='$ID'&gt;
-	    &lt;div class='anfang' draggable='true' ondragstart='drag(event)'&gt;$Title&lt;/div&gt;
-	    &lt;div class='tags'&gt;&lt;span&gt;$Tags&lt;/span&gt;&lt;/div&gt;
-	&lt;/a&gt;
-    """).substitute(hdr, Tags=_tags)
-    return item
-
-def HTML_filtered_list(data):
-    list_ = ""
-    sorted_ids = sorted(data.keys(), reverse=True)
-    for id_ in sorted_ids:
-        hdr = data[id_]
-        list_ += HTML_list_item(hdr)
-    return "&lt;div id='list_box'&gt;" + list_ + "&lt;/div&gt;"
-
-def HTML_preview():
-    return """
-    &lt;div id='preview_box'&gt;
-        &lt;div id='preview_pane' class='zk'&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    """
-
-
-notes, tags, tag_shortlist = build_database(ZK_DIR)
-support_dir = os.path.join(os.environ['TM_BUNDLE_SUPPORT'], 'lib')
-
-print HTML_preamble("Zettelkasten Notes", support_dir).encode('utf-8')
-print HTML_data_store("notes", notes).encode('utf-8')
-print HTML_data_store("tags", tags).encode('utf-8')
-print HTML_tag_bar(tag_shortlist).encode('utf-8')
-print HTML_filter_bar().encode('utf-8')
-print HTML_filtered_list(notes).encode('utf-8')
-print HTML_preview().encode('utf-8')
-print HTML_postamble().encode('utf-8')
-
+print open_in_htmlview(url)
 </string>
 	<key>input</key>
 	<string>none</string>
