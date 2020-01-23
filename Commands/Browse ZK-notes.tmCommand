@@ -11,7 +11,8 @@ import os
 
 host = os.environ.get('ZK_HOST', 'http://localhost')
 port = os.environ.get('ZK_PORT', 9075)
-url = "{}:{}".format(host, port)
+key = os.environ.get('TM_CURRENT_WORD') or os.environ.get('TM_SELECTED_TEXT') or ""
+url = "{}:{}/?filter_value={} ".format(host, port, key)
 
 def open_in_htmlview(url):
    return """
