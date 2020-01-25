@@ -11,7 +11,8 @@ import os
 
 host = os.environ.get('ZK_HOST', 'http://localhost')
 port = os.environ.get('ZK_PORT', 9075)
-url = "{}:{}".format(host, port)
+key = os.environ.get('TM_CURRENT_WORD') or os.environ.get('TM_SELECTED_TEXT') or ""
+url = "{}:{}/?filter_value={} ".format(host, port, key)
 
 def open_in_htmlview(url):
    return """
@@ -35,9 +36,9 @@ print open_in_htmlview(url)
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string>~@k</string>
+	<string>~@K</string>
 	<key>name</key>
-	<string>Browse ZK-notes</string>
+	<string>Search ZK-notes</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
@@ -45,7 +46,7 @@ print open_in_htmlview(url)
 	<key>outputLocation</key>
 	<string>newWindow</string>
 	<key>uuid</key>
-	<string>E097E882-B7E5-4EE1-AE73-BA2AF90D9900</string>
+	<string>8FA7EE4E-5F8E-4098-9504-B391F80825F2</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>
