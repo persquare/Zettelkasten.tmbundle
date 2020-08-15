@@ -12,7 +12,7 @@
 				<key>name</key>
 				<string>ZK_TOOL</string>
 				<key>value</key>
-				<string>/Users/eperspe/Source/FOSS/ZK2/zk_tool.py</string>
+				<string>${HOME}/Source/ZK2/zk_tool.py</string>
 			</dict>
 		</array>
 	</dict>
