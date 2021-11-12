@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>md</string>
+	</array>
+	<key>firstLineMatch</key>
+	<string>^&lt;!--\s*ZK</string>
+	<key>name</key>
+	<string>ZK</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>include</key>
+			<string>#zkline</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#frontmatter</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>text.html.markdown</string>
+		</dict>
+	</array>
+	<key>repository</key>
+	<dict>
+		<key>frontmatter</key>
+		<dict>
+			<key>begin</key>
+			<string>^(-{3})\s*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.heading</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>^(-{3})\s*$</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.heading</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.yaml</string>
+				</dict>
+			</array>
+		</dict>
+		<key>zkline</key>
+		<dict>
+			<key>comment</key>
+			<string>First line match: ^&lt;^&lt;!--\s*ZK</string>
+			<key>match</key>
+			<string>^&lt;!--\s*ZK(?:\d{12,})?\s*--&gt;\s*$</string>
+			<key>name</key>
+			<string>comment.line</string>
+		</dict>
+	</dict>
+	<key>scopeName</key>
+	<string>text.html.markdown.zk</string>
+	<key>uuid</key>
+	<string>814D7ED0-EA79-498A-B694-3B0FE3ACBE6D</string>
+</dict>
+</plist>
