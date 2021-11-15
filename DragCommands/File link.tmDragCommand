@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>command</key>
+	<string>#!/usr/bin/env sh
+
+# Default behaviour is to copy file to imgs/&lt;ZKID&gt;/filename and insert link to copy
+
+ZKID=${TM_FILENAME:2}
+ZKID=${ZKID%.*}
+
+SRCFILE="${TM_DROPPED_FILE}"
+FILENAME=$(basename "${SRCFILE}")
+NAME="${FILENAME%.*}"
+
+IMGDIR="${ZK_DIR}/img/${ZKID}"
+mkdir -p "${IMGDIR}"
+
+cp "${SRCFILE}" "${IMGDIR}/${FILENAME}"
+
+LINK="img/${ZKID}/${FILENAME}"
+
+# Pressing ALT when dropping inserts reflink and pushes link ref to pasteboard
+if [ "${TM_MODIFIER_FLAGS}" == OPTION ]; then
+    echo "![${FILENAME}][${NAME}]"
+    echo "[${NAME}]: ${LINK}" | pbcopy 
+else
+    echo "![${FILENAME}](${LINK})"
+fi
+
+
+# os.environ.get('TM_MODIFIER_FLAGS', "None")
+</string>
+	<key>draggedFileExtensions</key>
+	<array>
+		<string>jpg</string>
+		<string>png</string>
+		<string>pdf</string>
+	</array>
+	<key>name</key>
+	<string>File link</string>
+	<key>output</key>
+	<string>insertAsSnippet</string>
+	<key>scope</key>
+	<string>text.html.markdown.zk</string>
+	<key>uuid</key>
+	<string>F06D7CCC-1984-4D96-9E68-F82D8691B149</string>
+</dict>
+</plist>
