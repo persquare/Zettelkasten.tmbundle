@@ -7,24 +7,32 @@
 
 # Default behaviour is to copy file to imgs/&lt;ZKID&gt;/filename and insert link to copy
 
+
+# see zk://220128145201 "Quick and dirty slugify"
+slugify () {
+    echo "$1" | iconv -t ascii//TRANSLIT | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z
+}
+
+
 ZKID=${TM_FILENAME:2}
 ZKID=${ZKID%.*}
 
 SRCFILE="${TM_DROPPED_FILE}"
 FILENAME=$(basename "${SRCFILE}")
-NAME="${FILENAME%.*}"
+EXT="${FILENAME##*.}" 
+SLUG=$(slugify "${FILENAME%.*}")
 
 IMGDIR="${ZK_DIR}/img/${ZKID}"
 mkdir -p "${IMGDIR}"
 
-cp "${SRCFILE}" "${IMGDIR}/${FILENAME}"
+cp "${SRCFILE}" "${IMGDIR}/${SLUG}.${EXT}"
 
-LINK="img/${ZKID}/${FILENAME}"
+LINK="img/${ZKID}/${SLUG}.${EXT}"
 
 # Pressing ALT when dropping inserts reflink and pushes link ref to pasteboard
 if [ "${TM_MODIFIER_FLAGS}" == OPTION ]; then
-    echo "![${FILENAME}][${NAME}]"
-    echo "[${NAME}]: ${LINK}" | pbcopy 
+    echo "![${FILENAME}][${SLUG}]"
+    echo "[${SLUG}]: ${LINK}" | pbcopy 
 else
     echo "![${FILENAME}](${LINK})"
 fi
