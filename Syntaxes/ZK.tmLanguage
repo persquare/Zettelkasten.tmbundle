@@ -7,7 +7,7 @@
 		<string>md</string>
 	</array>
 	<key>firstLineMatch</key>
-	<string>^&lt;!--\s*ZK</string>
+	<string>^&lt;!--\s*ZK(?:\d{12,})?\s*</string>
 	<key>name</key>
 	<string>ZK</string>
 	<key>patterns</key>

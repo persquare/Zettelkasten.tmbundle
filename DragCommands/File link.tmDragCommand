@@ -13,6 +13,7 @@ slugify () {
     echo "$1" | iconv -t ascii//TRANSLIT | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z
 }
 
+ZK="${ZK_TOOL-zk}"
 
 ZKID=${TM_FILENAME:2}
 ZKID=${ZKID%.*}
@@ -22,7 +23,7 @@ FILENAME=$(basename "${SRCFILE}")
 EXT="${FILENAME##*.}" 
 SLUG=$(slugify "${FILENAME%.*}")
 
-IMGDIR="${ZK_DIR}/img/${ZKID}"
+IMGDIR="$(${ZK} --dir)/img/${ZKID}"
 mkdir -p "${IMGDIR}"
 
 cp "${SRCFILE}" "${IMGDIR}/${SLUG}.${EXT}"

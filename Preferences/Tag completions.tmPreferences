@@ -8,12 +8,10 @@
 	<string>meta.frontmatter.zk</string>
 	<key>settings</key>
 	<dict>
-		<key>comment</key>
-		<string>echo -e ${ZK_COMPLETIONS// /\\n}</string>
 		<key>completionCommand</key>
 		<string>${ZK_TOOL} --tags</string>
 		<key>disableDefaultCompletion</key>
-		<integer>0</integer>
+		<integer>1</integer>
 	</dict>
 	<key>uuid</key>
 	<string>58E32CFE-D871-4E4F-8B26-D4AC54C8FE60</string>

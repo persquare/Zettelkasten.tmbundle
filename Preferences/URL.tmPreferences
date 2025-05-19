@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>isDisabled</key>
+	<true/>
 	<key>name</key>
 	<string>URL</string>
 	<key>scope</key>
@@ -11,12 +13,16 @@
 		<key>shellVariables</key>
 		<array>
 			<dict>
+				<key>comment</key>
+				<string>Default is http://localhost</string>
 				<key>name</key>
 				<string>ZK_HOST</string>
 				<key>value</key>
 				<string>http://localhost</string>
 			</dict>
 			<dict>
+				<key>comment</key>
+				<string>Default is 9075</string>
 				<key>name</key>
 				<string>ZK_PORT</string>
 				<key>value</key>
