@@ -7,31 +7,33 @@
 	<key>command</key>
 	<string>#!/Users/per/.virtualenvs/zk2/bin/python3
 
-import os
+import sys
+from datetime import datetime
 
-import zk2
 
-zk = zk2.ZK()
-body = os.environ.get("TM_SELECTED_TEXT", "")
-note_id = zk.create(body)
-zk.edit(note_id)
+for line in sys.stdin.readlines():
+    if line.startswith("Modified: "):
+        line = f"Modified: {datetime.now()}\n"
+    sys.stdout.write(line)
 </string>
 	<key>input</key>
-	<string>none</string>
+	<string>document</string>
 	<key>inputFormat</key>
 	<string>text</string>
-	<key>keyEquivalent</key>
-	<string>^@k</string>
 	<key>name</key>
-	<string>New ZK-note</string>
+	<string>Change Modifiation Date</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
 	<string>text</string>
 	<key>outputLocation</key>
-	<string>discard</string>
+	<string>replaceInput</string>
+	<key>scope</key>
+	<string>text.html.markdown.zk</string>
+	<key>semanticClass</key>
+	<string>callback.document.will-save</string>
 	<key>uuid</key>
-	<string>9541F86B-DCE9-43BC-8EA8-A59AB2BC4002</string>
+	<string>2985E980-F2DB-47F8-9F6D-31408F4E085F</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>

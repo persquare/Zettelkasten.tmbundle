@@ -13,71 +13,89 @@ html_header "Zettelkasten Bundle Help" ""
 "$TM_SUPPORT_PATH/lib/markdown_to_help.rb" &lt;&lt;'MARKDOWN'
 
 # Introduction
-Zettelkasten -- A note keeper and browser for TextMate 2
+Zettelkasten -- A note keeper for TextMate 2
 
-This bundle provides two basic commands: "New ZK-note" and "Browse ZK-notes". Contrary to most other bundles, _the commands are not tied to a scope_, but can be invoked anywhere within TextMate.
+This bundle requires the [ZK2 python package](https://github.com/persquare/ZK2), and provides two basic commands: "New ZK-note" and "Browse ZK-notes". Contrary to most other bundles, _the commands are not tied to a scope_, but can be invoked anywhere within TextMate.
+
+The YAML.tmBundle is optional 
 
 ## New ZK-note (⌃⌘K)
-This will create a new note in `ZK_DIR`, fill it with some default information in the _header_, and wait for you to jot down that brilliant idea before it disappears. If you have any text selected in the frontmost TextMate document, that text will be put into the body of the note.
+This will create a new note in the _notes directory_ (see [Setup](#setup)), fill it with some default information in the _header_, and wait for you to jot down that brilliant idea before it disappears. If you have any text selected in the frontmost TextMate document, that text will be put into the body of the note.
 
-A note consists of the _header_, a blank line, and the actual _note_ in Markdown (or plain text) format:
+A note consists of the a special _comment_, a YAML _header_, and the actual _note_ in Markdown (or plain text) format:
 
+    &lt;!-- ZK140831100134 --&gt;
+    ---
     Date: 2014-08-31 10:01:34
     Author: Per Persson
     ID: 140831100134
-    Tags: zk, searching 
-      
+    Tags: zk, searching
+    Title: Searching notes 
+    --- 
     To search zk-notes using finder, create a search in column layout, 
     save the search and add it to the sidebar, 
     right click the saved search and select 'Show Search Criteria'.
     Now, whenever the saved search is clicked, the search will be prepared for you. 
 
-The `ID` in the header is used to create links between notes using the scheme `zk://&lt;id&gt;` (see `zk2.js` in server), and is also used to create the name of the file (`zk&lt;id&gt;.md`). A close inspection of the `ID` format reveals that it is composed by compacting the `Date` entry. 
+The `ID` in the header is used to create links between notes using the scheme `zk://&lt;id&gt;` (see `zk2.js` in server), and is also used to create the name of the note file (`zk&lt;id&gt;.md`). A close inspection of the `ID` format reveals that it is composed by compacting the `Date` entry. 
 
 Tags are essential to finding notes at a later time, so take some time to figure out what tags to use. State as many as you like, separated by space, comma, or both. Tags are single words, so `Tags: foo bar, baz` counts as three tags, not two.
 
-Adding a `Title:` entry in the header is optional, and if not present, the first few words of the first paragraph will be used as a title in search (see below).
+Adding a `Title:` entry in the header is optional, and if not present, the first few words of the first paragraph will be used as a title.
 
 ## Browse ZK-notes (⌥⌘K)
-This will turn up a viewer in TextMate's companion view, showing a list of notes, a search field, and a preview of the top match. The items in the list can be dragged and will insert a zk-link (zk://&lt;ID&gt;) when dropped. 
+This will turn up a viewer in TextMheadingate's companion view, showing a list of notes, a search field, and a preview of the top match. The items in the list can be dragged and will insert a zk-link (`[Font metrics](zk://250418174118)`) when dropped. See [Using the ZK Browser](#using_the_zk_browser).
 
 ## Editing ZK-notes
 
 A couple of commands and features exist to aid in note writing
 
-### FIXME
+### Autocomplete tags
+Typing one or more letters and hitting ⎋ will cycle through the existing tags. 
 
-## Using the ZK Browser
+### Dragging images into notes
+Dragging images (jpg, png or pdf) into a note will copy the image to a folder `img/&lt;ID&gt;/&lt;slug&gt;` and insert an image link `![&lt;imag_name&gt;](&lt;link_to_copy&gt;)` at the cursor.
+Pressing ALT when dropping instead inserts a reflink and pushes a link reference onto the pasteboard.
 
-### Filter search FIXME
-You can filter the search results by tags (`#foo #bar ...`), by id (`@1407`), or by title text (not yet implemented). 
+### Archive note (⌃⌥⌘A)
+Tag note with `archived``
 
-In filtering, tags are discarded unless they exist, so filtering by `#sdkjhfsadiu` will (most likely) have no effect. 
+### New linked note
+Todo
 
-Filtering by `ID` is a simple way to filter by date, and will do partial matching. Thus, filtering by `@1408` will restrict results to notes from August 2014. 
+### Export note
+Todo
 
-Filtering by a text string to match against the title is on the ToDo list.
+## Using the ZK Browser &lt;a name="using_the_zk_browser"&gt;&lt;/a&gt;
 
-### Archive notes
-The tag `#archived` has a special meaning: Notes tagged with `#archived` will not be shown by default. 
+### Filter and search
+You can filter the notes by tags (`foo bar ...`) or by id (`@1407`), or perform a free text (`"yadda yadda`) search.
+The above can be combined, but the order of is `[tag]* ["string with spaces]? [@123456789012]?`
+Filtering always performs partial matching, even on tags. Thus, filtering by `@1408` will restrict results to notes from August 2014. 
+
+### Archive **notes**
+You can archive a not by clicking the trash can icon.
+The tag `archived` has a special meaning: Notes tagged with `archived` will not be shown by default. 
 This is useful for notes that are e.g. out-of-date but should be kept for some other reason.
+Entering `archived` in the filter box to see all archived notes.
 
-## Setup FIXME
-You want to set `ZK_DIR` environment variable to point to the directory where your notes are stored, e.g. `$HOME/Dropbox/Notes`. This can be done in the TextMate's preferences, or in the bundle settings, see [TextMate's documentation][3] for details. The default location if you don't set `ZK_DIR` is `$HOME/notes`, and if you're OK with that, just make sure the directory exists. 
+### Dragging notes references into a note being edited
+Dragging a note item from _the list_ into the body of a note being edited will insert a markdown link: `[Font metrics](zk://250418174118)`. Pressing ALT while dragging will insert a reference `[FIXME]: zk://250421153257 "Sub-, superscript and underline positioning"`.
+ 
+## Setup &lt;a name="setup"&gt;&lt;/a&gt;
+The basic setup is handled by the ZK2 package's config file (`~/.zk_config`), see ZK2 documentation for details.  
+You probably want to set a markdown render for the note body as the default is to just wrap it in `&lt;pre&gt;...&lt;/pre&gt;` tags.  
+The default location for notes is `~/.zk`, and if you're OK with that, just make sure the directory exists. 
 
-Since the commands are global to TextMate, you may want to remap the keyboard shortcuts depending on what other bundles you use.
+Since the "New ZK-note" and "Browse ZK-notes" commands are global to TextMate, you may want to remap their keyboard shortcuts depending on what other bundles you use.
 
-## Extras FIXME
-The creation of notes is handled by the tool `zk` in the bundle's `Support/bin` folder. It is useful in its own right, and could be symlinked from somewhere on your path to be available as a command. See `zk --help` for more info. 
+## Extras
+The creation of notes is handled by the tool `zk` from the ZK2 package. It is useful in its own right, see `zk --help` for more info. 
+If you installed ZK2 in a virtual environment, modify bundle setting `ZK-tool` to reflect the location of the command, e.g. `${HOME}/.virtualenvs/zk2/bin/zk`.
 
 An example of a putting `zk` to good use is to create a service that allows you to create a note from text in any application (change path to `zk` as needed):
 
 ![Service example](lib/ZKService.png "ZK Service")
-
-## Experimental
-There is a URL scheme handler in the `Support/bin` folder that allows more actions to be taken from the ZK-view, but it might also pose a security risk.
-To enable it, go into the `Support/bin` folder and double-click it to register it as the `x-zk-url` URL scheme handler. 
-
 
 ## Credits
 Note keeping and name inspired by [Christian Tietze's writings][1]  
@@ -90,7 +108,6 @@ Icons in ZK-view by [Weblab X][4] licenced under [CC BY 3.0][5]
 [3]: http://manual.macromates.com/en/environment_variables.html
 [4]: http://www.weblabx.com
 [5]: https://creativecommons.org/licenses/by/3.0/
-
 
 MARKDOWN
 

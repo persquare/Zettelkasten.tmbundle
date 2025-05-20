@@ -5,98 +5,39 @@
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>#!/usr/bin/env python
+	<string>#!/Users/per/.virtualenvs/zk2/bin/python3
+
 import os
-import re
-import codecs
-from datetime import datetime
 
-HEADER_LINE_REGEX = r'^([a-zA-Z][a-zA-Z0-9_]*):\s*(.*)\s*'
+import zk2
 
-def read_original(filepath):
-    with codecs.open(filepath, 'r', 'utf-8') as f:
-        txt = f.readlines()
-    return txt
-
-def original_header(txt):
-    header = {}
-    note = []
-    for line in txt:
-        match = re.match(HEADER_LINE_REGEX, line)
-        if  not match:
-            break
-        header[match.group(1)] = match.group(2)
-    return header, len(header)
-
-def clone_header(header):
-    hdr = dict(header)
-    # hdr.setdefault('Title', 'Linked note')
-    time = datetime.now()
-    hdr['Date'] = time.strftime("%Y-%m-%d %H:%M:%S")
-    zkid = time.strftime("%y%m%d%H%M%S")
-    hdr['ID'] = zkid 
-    return hdr 
+zk = zk2.ZK()
+new_body = os.environ.get("TM_SELECTED_TEXT", "")
+new_note_id = zk.create(new_body)
+if not new_note_id:
+    sys.stderr.write("CREATION FAILED")
+    sys.exit(206)
     
-def _file_path(path, header):
-    filename = "zk" + header['ID'] + ".md"
-    path = os.path.join(path, filename)
-    return path
-    
-
-def write_zk(path, header, body=None):
-    header.setdefault('Title', '')
-    template = "Date: {Date}\nAuthor: {Author}\nID: {ID}\nTags: {Tags}\nTitle: {Title}\n\n"
-    path = _file_path(path, header)
-    with open(path, 'w') as f:
-        f.write(template.format(**header))
-        if body:
-            f.write(body)
-
-
-# def txmt_URI(path):
-#     uri = "txmt://open?url=file://%s&amp;line=6&amp;column=0" % path
-#     return uri
-
-
-path = os.environ['TM_DIRECTORY']
-txt = read_original(os.environ['TM_FILEPATH']) 
-header, n = original_header(txt)
-new_title = os.environ.get('TM_SELECTED_TEXT', 'New note')
-
-link_to_original = "\nThis note is related to [{Title}](zk://{ID})\n".format(**header)
-
-new_header = clone_header(header)
-new_header['Title'] = new_title
-link_to_new = "\nSee [{Title}](zk://{ID})\n".format(**new_header)
-
-
-body = "".join(txt[n:] + [link_to_new])
-new_body = link_to_original
-
-
-write_zk(path, header, body)
-write_zk(path, new_header, new_body)
-
-import subprocess
-subprocess.call(["open", "txmt://open?url=file://"+_file_path(path, new_header)])
-
+print(f"[See](zk://{new_note_id})")    
 </string>
 	<key>input</key>
-	<string>none</string>
+	<string>selection</string>
 	<key>inputFormat</key>
 	<string>text</string>
-	<key>isDisabled</key>
-	<true/>
+	<key>keyEquivalent</key>
+	<string>^@n</string>
 	<key>name</key>
-	<string>New Linked ZK-note</string>
+	<string>New linked ZK-note</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
 	<string>text</string>
 	<key>outputLocation</key>
-	<string>newWindow</string>
+	<string>replaceSelection</string>
+	<key>scope</key>
+	<string>text.html.markdown.zk</string>
 	<key>uuid</key>
-	<string>0CA068E9-9DB0-4D66-B91D-775089CD2E73</string>
+	<string>716C31C0-66F6-42C8-89FD-3A78CAAF905F</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>

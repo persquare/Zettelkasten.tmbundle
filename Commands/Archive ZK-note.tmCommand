@@ -3,17 +3,30 @@
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
-	<string>nop</string>
+	<string>saveActiveFile</string>
 	<key>command</key>
 	<string>#!/Users/per/.virtualenvs/zk2/bin/python3
 
 import os
+import re
 
 import zk2
 
+RE_NOTE_ID = r"zk(\d{12,})\.md"
+
 zk = zk2.ZK()
-body = os.environ.get("TM_SELECTED_TEXT", "")
-note_id = zk.create(body)
+note_path = os.environ.get("TM_FILEPATH")
+if not note_path:
+    sys.stderr.write("TM_FILEPATH not defined")
+    sys.exit(206)
+    
+match = re.search(RE_NOTE_ID, note_path)
+if not match
+    sys.stderr.write(f"Could not get ID of {note_path}")
+    sys.exit(206)
+    
+note_id = match.group(1)    
+zk.archive(note_id)
 zk.edit(note_id)
 </string>
 	<key>input</key>
@@ -21,17 +34,19 @@ zk.edit(note_id)
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string>^@k</string>
+	<string>^~@a</string>
 	<key>name</key>
-	<string>New ZK-note</string>
+	<string>Toggle Archived</string>
 	<key>outputCaret</key>
-	<string>afterOutput</string>
+	<string>heuristic</string>
 	<key>outputFormat</key>
 	<string>text</string>
 	<key>outputLocation</key>
-	<string>discard</string>
+	<string>toolTip</string>
+	<key>scope</key>
+	<string>text.html.markdown.zk</string>
 	<key>uuid</key>
-	<string>9541F86B-DCE9-43BC-8EA8-A59AB2BC4002</string>
+	<string>0434B9C8-9708-408C-B711-F7A825021B59</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>

@@ -10,13 +10,23 @@
 	<string>A note keeper and browser for TextMate 2.</string>
 	<key>mainMenu</key>
 	<dict>
+		<key>excludedItems</key>
+        <array>
+			<string>2985E980-F2DB-47F8-9F6D-31408F4E085F</string>
+		</array>
 		<key>items</key>
 		<array>
-			<string>DB068847-F315-4F90-8B45-61A8F5538393</string>
-			<string>E097E882-B7E5-4EE1-AE73-BA2AF90D9900</string>
-			<string>------------------------------------</string>
 			<string>E3D5C273-DB6F-47B6-A205-C68B9433EFB3</string>
+			<string>9541F86B-DCE9-43BC-8EA8-A59AB2BC4002</string>
+			<string>E097E882-B7E5-4EE1-AE73-BA2AF90D9900</string>
+			<string>8FA7EE4E-5F8E-4098-9504-B391F80825F2</string>
+			<string>------------------------------------</string>
+			<string>716C31C0-66F6-42C8-89FD-3A78CAAF905F</string>
+			<string>0434B9C8-9708-408C-B711-F7A825021B59</string>
+			<string>88B3407E-5C49-4616-8C01-397CABD67B0C</string>
 		</array>
+		<key>submenus</key>
+		<dict/>
 	</dict>
 	<key>name</key>
 	<string>Zettelkasten</string>

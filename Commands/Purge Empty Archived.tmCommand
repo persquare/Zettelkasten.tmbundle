@@ -12,26 +12,23 @@ import os
 import zk2
 
 zk = zk2.ZK()
-body = os.environ.get("TM_SELECTED_TEXT", "")
-note_id = zk.create(body)
-zk.edit(note_id)
-</string>
+purged = zk.purge_empty_archived()
+
+print("\n".join(purged))</string>
 	<key>input</key>
 	<string>none</string>
 	<key>inputFormat</key>
 	<string>text</string>
-	<key>keyEquivalent</key>
-	<string>^@k</string>
 	<key>name</key>
-	<string>New ZK-note</string>
+	<string>Purge Archived ZK-notes</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
 	<string>text</string>
 	<key>outputLocation</key>
-	<string>discard</string>
+	<string>toolTip</string>
 	<key>uuid</key>
-	<string>9541F86B-DCE9-43BC-8EA8-A59AB2BC4002</string>
+	<string>88B3407E-5C49-4616-8C01-397CABD67B0C</string>
 	<key>version</key>
 	<integer>2</integer>
 </dict>
