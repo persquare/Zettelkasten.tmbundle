@@ -19,7 +19,9 @@ This bundle requires the [ZK2 python package](https://github.com/persquare/ZK2),
 
 The YAML.tmBundle is optional 
 
-## New ZK-note (⌃⌘K)
+## General commands
+
+### New ZK-note (⌃⌘K)
 This will create a new note in the _notes directory_ (see [Setup](#setup)), fill it with some default information in the _header_, and wait for you to jot down that brilliant idea before it disappears. If you have any text selected in the frontmost TextMate document, that text will be put into the body of the note.
 
 A note consists of the a special _comment_, a YAML _header_, and the actual _note_ in Markdown (or plain text) format:
@@ -43,8 +45,11 @@ Tags are essential to finding notes at a later time, so take some time to figure
 
 Adding a `Title:` entry in the header is optional, and if not present, the first few words of the first paragraph will be used as a title.
 
-## Browse ZK-notes (⌥⌘K)
+### Browse ZK-notes (⌥⌘K)
 This will turn up a viewer in TextMate's companion view, showing a list of notes, a search field, and a preview of the top match. The items in the list can be dragged and will insert a zk-link (`[Font metrics](zk://250418174118)`) when dropped. See [Using the ZK Browser](#using_the_zk_browser).
+
+### Search ZK-notes (⇧⌥⌘K)
+This will turn up a viewer TextMate's companion view, with the search field populated with the current word (under the cursor) or selection.
 
 ## Editing ZK-notes
 
