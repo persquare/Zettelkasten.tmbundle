@@ -44,11 +44,11 @@ Tags are essential to finding notes at a later time, so take some time to figure
 Adding a `Title:` entry in the header is optional, and if not present, the first few words of the first paragraph will be used as a title.
 
 ## Browse ZK-notes (⌥⌘K)
-This will turn up a viewer in TextMheadingate's companion view, showing a list of notes, a search field, and a preview of the top match. The items in the list can be dragged and will insert a zk-link (`[Font metrics](zk://250418174118)`) when dropped. See [Using the ZK Browser](#using_the_zk_browser).
+This will turn up a viewer in TextMate's companion view, showing a list of notes, a search field, and a preview of the top match. The items in the list can be dragged and will insert a zk-link (`[Font metrics](zk://250418174118)`) when dropped. See [Using the ZK Browser](#using_the_zk_browser).
 
 ## Editing ZK-notes
 
-A couple of commands and features exist to aid in note writing
+A couple of commands and features exist to aid in note writing.
 
 ### Autocomplete tags
 Typing one or more letters and hitting ⎋ will cycle through the existing tags. 
@@ -57,45 +57,21 @@ Typing one or more letters and hitting ⎋ will cycle through the existing tags.
 Dragging images (jpg, png or pdf) into a note will copy the image to a folder `img/&lt;ID&gt;/&lt;slug&gt;` and insert an image link `![&lt;imag_name&gt;](&lt;link_to_copy&gt;)` at the cursor.
 Pressing ALT when dropping instead inserts a reflink and pushes a link reference onto the pasteboard.
 
-### Archive note (⌃⌥⌘A)
-Tag note with `archived``
+### Toggle Archived note (⌃⌥⌘A)
+Command to toggle `archived` status,
 
-### New linked note
-Todo
+### New linked note (⌃⌘N)
+Command to create a new note from the current selection, and replacing the selection with a link to the new note.
 
 ### Export note
 Todo
 
+### Purge archived notes
+A command to clear out archived notes with _no text_ in the body.
+
 ## Using the ZK Browser &lt;a name="using_the_zk_browser"&gt;&lt;/a&gt;
 
-### Filter and search
-You can filter the notes by tags (`foo bar ...`) or by id (`@1407`), or perform a free text (`"yadda yadda`) search.
-The above can be combined, but the order of is `[tag]* ["string with spaces]? [@123456789012]?`
-Filtering always performs partial matching, even on tags. Thus, filtering by `@1408` will restrict results to notes from August 2014. 
-
-### Archive **notes**
-You can archive a not by clicking the trash can icon.
-The tag `archived` has a special meaning: Notes tagged with `archived` will not be shown by default. 
-This is useful for notes that are e.g. out-of-date but should be kept for some other reason.
-Entering `archived` in the filter box to see all archived notes.
-
-### Dragging notes references into a note being edited
-Dragging a note item from _the list_ into the body of a note being edited will insert a markdown link: `[Font metrics](zk://250418174118)`. Pressing ALT while dragging will insert a reference `[FIXME]: zk://250421153257 "Sub-, superscript and underline positioning"`.
- 
-## Setup &lt;a name="setup"&gt;&lt;/a&gt;
-The basic setup is handled by the ZK2 package's config file (`~/.zk_config`), see ZK2 documentation for details.  
-You probably want to set a markdown render for the note body as the default is to just wrap it in `&lt;pre&gt;...&lt;/pre&gt;` tags.  
-The default location for notes is `~/.zk`, and if you're OK with that, just make sure the directory exists. 
-
-Since the "New ZK-note" and "Browse ZK-notes" commands are global to TextMate, you may want to remap their keyboard shortcuts depending on what other bundles you use.
-
-## Extras
-The creation of notes is handled by the tool `zk` from the ZK2 package. It is useful in its own right, see `zk --help` for more info. 
-If you installed ZK2 in a virtual environment, modify bundle setting `ZK-tool` to reflect the location of the command, e.g. `${HOME}/.virtualenvs/zk2/bin/zk`.
-
-An example of a putting `zk` to good use is to create a service that allows you to create a note from text in any application (change path to `zk` as needed):
-
-![Service example](lib/ZKService.png "ZK Service")
+See [ZK2 README][3]
 
 ## Credits
 Note keeping and name inspired by [Christian Tietze's writings][1]  
@@ -105,7 +81,7 @@ Icons in ZK-view by [Weblab X][4] licenced under [CC BY 3.0][5]
 
 [1]: http://christiantietze.de/posts/tags/zettelkasten/
 [2]: https://github.com/textmate/imagebrowser.tmbundle
-[3]: http://manual.macromates.com/en/environment_variables.html
+[3]: https://github.com/persquare/ZK2/blob/master/README.md
 [4]: http://www.weblabx.com
 [5]: https://creativecommons.org/licenses/by/3.0/
 

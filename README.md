@@ -3,9 +3,9 @@ Zettelkasten.tmBundle
 
 A note keeper and browser for TextMate 2 
 
-## Setup FIXME
+## Setup
 
-You want to set `ZK_DIR` environment variable to point to the directory where your notes are stored, e.g. `$HOME/Dropbox/Notes`.
+See <https://github.com/persquare/ZK2> for how to install and set up a ZK service, then see Zettelkasten Help in TextMate
 
 ## Credits
 
