@@ -21,7 +21,7 @@ if not note_path:
     sys.exit(206)
     
 match = re.search(RE_NOTE_ID, note_path)
-if not match
+if not match:
     sys.stderr.write(f"Could not get ID of {note_path}")
     sys.exit(206)
     
