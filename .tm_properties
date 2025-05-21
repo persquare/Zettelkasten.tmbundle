@@ -1,4 +1,0 @@
-projectDirectory = ${CWD}
-[source.javascript]
-softTabs=True
-tabSize=2
