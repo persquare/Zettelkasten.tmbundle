@@ -9,7 +9,7 @@
 	<key>settings</key>
 	<dict>
 		<key>completionCommand</key>
-		<string>${ZK_TOOL} --tags</string>
+		<string>${ZK_TOOL-zk} --tags | tr " " "\n"</string>
 		<key>disableDefaultCompletion</key>
 		<integer>1</integer>
 	</dict>
